@@ -47,7 +47,7 @@ export default function Backup() {
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="font-display text-xl font-semibold text-white">Backup</h1>
+        <h1 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">Backup</h1>
         <p className="text-zinc-500 text-sm mt-0.5">Exporte ou restaure todos os seus dados</p>
       </div>
 
@@ -67,18 +67,18 @@ export default function Backup() {
 
       <div className="space-y-4">
         {/* Exportar */}
-        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 shadow-sm p-6">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6">
           <div className="flex items-start gap-4">
             <div className="w-11 h-11 bg-primary-50 dark:bg-primary-900/30 rounded-xl flex items-center justify-center shrink-0">
               <Download size={20} className="text-primary-600 dark:text-primary-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-zinc-200 mb-1">Exportar dados</h2>
+              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Exportar dados</h2>
               <p className="text-xs text-zinc-500 mb-4">
                 Baixa um arquivo JSON com todos os seus dados: categorias, lançamentos, metas, orçamentos, cartões e recorrências.
               </p>
               <button onClick={handleExportar} disabled={exportLoading}
-                className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center gap-2">
+                className="bg-primary-600 hover:bg-primary-700 text-zinc-900 dark:text-white px-5 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center gap-2">
                 {exportLoading ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
                 Exportar backup
               </button>
@@ -87,13 +87,13 @@ export default function Backup() {
         </div>
 
         {/* Importar */}
-        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 shadow-sm p-6">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6">
           <div className="flex items-start gap-4">
             <div className="w-11 h-11 bg-amber-50 dark:bg-amber-900/30 rounded-xl flex items-center justify-center shrink-0">
               <Upload size={20} className="text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-sm font-semibold text-zinc-200 mb-1">Importar dados</h2>
+              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Importar dados</h2>
               <p className="text-xs text-zinc-500 mb-1">
                 Restaura dados a partir de um arquivo de backup JSON exportado anteriormente.
               </p>
@@ -101,7 +101,7 @@ export default function Backup() {
                 ⚠ Atenção: a importação adiciona os dados ao seu cadastro atual sem apagar o existente.
               </p>
               <button onClick={() => fileInputRef.current?.click()} disabled={importLoading}
-                className="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center gap-2">
+                className="bg-amber-500 hover:bg-amber-600 text-zinc-900 dark:text-white px-5 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center gap-2">
                 {importLoading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                 Selecionar arquivo
               </button>
@@ -111,10 +111,10 @@ export default function Backup() {
         </div>
 
         {/* Info */}
-        <div className="bg-zinc-800 dark:bg-zinc-800 rounded-2xl border border-zinc-800 p-5">
+        <div className="bg-zinc-800 dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5">
           <div className="flex items-center gap-2 mb-3">
             <HardDrive size={16} className="text-zinc-500" />
-            <span className="text-sm font-medium text-zinc-300">O que é incluído no backup</span>
+            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">O que é incluído no backup</span>
           </div>
           <ul className="space-y-1.5 text-xs text-zinc-500">
             {['Categorias e subcategorias', 'Todos os lançamentos', 'Metas de gastos', 'Orçamentos mensais', 'Cartões de crédito', 'Recorrências'].map(item => (

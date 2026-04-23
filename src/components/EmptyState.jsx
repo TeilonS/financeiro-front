@@ -6,7 +6,7 @@ export default function EmptyState({ icon: Icon, title, description, action }) {
           <Icon size={24} className="text-zinc-500" />
         </div>
       )}
-      <p className="text-zinc-300 font-medium text-sm">{title}</p>
+      <p className="text-zinc-700 dark:text-zinc-300 font-medium text-sm">{title}</p>
       {description && (
         <p className="text-zinc-500 text-xs mt-1 max-w-xs">{description}</p>
       )}
