@@ -50,7 +50,7 @@ function AIGauge({ value }) {
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-xl font-bold text-zinc-900 dark:text-white">{value}%</span>
-        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Accuracy</span>
+        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Precisão</span>
       </div>
     </div>
   )
@@ -179,7 +179,7 @@ export default function Dashboard() {
       {/* Top Header Section */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12 items-center">
         <div className="md:col-span-4">
-          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Intelligent Overview</p>
+          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Visão Geral Inteligente</p>
           <h1 className="font-sans text-4xl font-bold text-zinc-900 dark:text-white tracking-tighter">{fmt(dadosResumo.saldo)}</h1>
           <div className="flex items-center gap-2 mt-4">
              <div className="flex items-center gap-1 text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded-lg border border-zinc-200 dark:border-white/5">
@@ -197,11 +197,11 @@ export default function Dashboard() {
         </div>
 
         <div className="md:col-span-3 text-right">
-           <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Monthly Projection</p>
+           <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Projeção Mensal</p>
            <p className="text-xl font-bold text-zinc-900 dark:text-white">{previsao ? fmt(previsao.saldoProjetado) : '---'}</p>
            <div className="flex justify-end gap-2 mt-2">
               <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-widest">IA Calculating</span>
+              <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-widest">IA Calculando</span>
            </div>
         </div>
       </div>
@@ -224,16 +224,16 @@ export default function Dashboard() {
             
             {/* Stat Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <StatCard label="Total Income" value={fmt(dadosResumo.totalReceitas)} icon={TrendingUp} color="emerald" trend={12} />
-              <StatCard label="Total Expenses" value={fmt(dadosResumo.totalDespesas)} icon={TrendingDown} color="red" trend={-5} />
-              <StatCard label="Net Profit" value={fmt(dadosResumo.saldo)} icon={Wallet} color="primary" />
+              <StatCard label="Receitas Totais" value={fmt(dadosResumo.totalReceitas)} icon={TrendingUp} color="emerald" trend={12} />
+              <StatCard label="Despesas Totais" value={fmt(dadosResumo.totalDespesas)} icon={TrendingDown} color="red" trend={-5} />
+              <StatCard label="Lucro Líquido" value={fmt(dadosResumo.saldo)} icon={Wallet} color="primary" />
             </div>
 
             {/* Main Area Chart */}
             <div className="bg-zinc-50 dark:bg-[#0A0A0A] rounded-3xl border border-zinc-200 dark:border-white/5 p-8 shadow-2xl relative overflow-hidden group">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Cash Flow Evolution</h2>
+                  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Evolução do Fluxo de Caixa</h2>
                   <p className="text-sm text-zinc-500 mt-1">Monthly performance tracking</p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -302,7 +302,7 @@ export default function Dashboard() {
             {/* Bottom Grid: Recent Activity + Category Breakdown */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                <div className="bg-zinc-50 dark:bg-[#0A0A0A] rounded-3xl border border-zinc-200 dark:border-white/5 p-6">
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest mb-6">Recent Transactions</h3>
+                  <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest mb-6">Transações Recentes</h3>
                   <div className="space-y-4">
                     {recentesLancamentos.map((l) => (
                       <div key={l.id} className="flex items-center justify-between group cursor-pointer p-2 rounded-2xl hover:bg-white/5 transition-colors">
@@ -325,7 +325,7 @@ export default function Dashboard() {
 
                <div className="bg-zinc-50 dark:bg-[#0A0A0A] rounded-3xl border border-zinc-200 dark:border-white/5 p-6">
                   <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-widest">AI Assistant</h3>
+                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Assistente de IA</h3>
                     <div className="p-1.5 bg-primary-500/10 rounded-lg"><ShieldCheck size={14} className="text-primary-500" /></div>
                   </div>
                   <AIGauge value={healthScore} />
@@ -341,7 +341,7 @@ export default function Dashboard() {
                </div>
 
                <div className="bg-zinc-50 dark:bg-[#0A0A0A] rounded-3xl border border-zinc-200 dark:border-white/5 p-6">
-                  <h3 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-widest mb-6">Spending by Category</h3>
+                  <h3 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-widest mb-6">Gastos por Categoria</h3>
                   <div className="space-y-5 mt-4">
                     {dadosCategorias.slice(0, 4).map((cat, i) => (
                       <div key={i} className="space-y-2">
@@ -371,7 +371,7 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 p-8 opacity-20">
                   <Scale size={80} />
                 </div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-2 opacity-80">Net Worth</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-2 opacity-80">Patrimônio Líquido</p>
                 <h2 className="text-4xl font-bold mb-8 tabular-nums">{fmt(patrimonio.patrimonioLiquido)}</h2>
                 
                 <div className="grid grid-cols-2 gap-4">
@@ -395,7 +395,7 @@ export default function Dashboard() {
             {previsao && (
               <div className="bg-zinc-900/50 rounded-3xl border border-zinc-200 dark:border-white/5 p-8">
                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Monthly Projection</h3>
+                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Projeção Mensal</h3>
                     <TrendingUp size={16} className="text-primary-400" />
                  </div>
                  
@@ -434,7 +434,7 @@ export default function Dashboard() {
             {/* Emergency Reserve Manager */}
             <div className="bg-zinc-900/50 rounded-3xl border border-zinc-200 dark:border-white/5 p-8">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Emergency Fund</h3>
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Reserva de Emergência</h3>
                 <ShieldCheck size={16} className="text-zinc-500" />
               </div>
               

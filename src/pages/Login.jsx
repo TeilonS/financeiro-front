@@ -115,10 +115,10 @@ export default function Login() {
 
           <div className="mb-8">
             <h1 className="font-sans font-bold text-white text-2xl tracking-tight">
-              {mode === 'login' ? 'Welcome Back' : mode === 'register' ? 'Get Started' : 'Reset Password'}
+              {mode === 'login' ? 'Bem-vindo de volta' : mode === 'register' ? 'Começar agora' : 'Reset Password'}
             </h1>
             <p className="text-zinc-500 text-sm mt-2">
-              {mode === 'login' ? 'Log in to your dashboard' : mode === 'register' ? 'Create your free account' : 'Enter your new password below'}
+              {mode === 'login' ? 'Entre no seu painel' : mode === 'register' ? 'Create your free account' : 'Enter your new password below'}
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function Login() {
                   onClick={() => { setMode('forgot'); setError('') }}
                   className="text-zinc-500 hover:text-white text-xs transition-colors"
                 >
-                  Forgot your password?
+                  Esqueceu sua senha?
                 </button>
               </p>
             )}
