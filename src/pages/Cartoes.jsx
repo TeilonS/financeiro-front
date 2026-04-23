@@ -8,7 +8,7 @@ const CORES = ['#EF4444', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4',
 
 const EMPTY = { nome: '', limite: '', faturaAtual: '', diaVencimento: '', cor: '#EF4444' }
 
-const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Cartoes() {
   const [cartoes, setCartoes] = useState([])
@@ -127,11 +127,11 @@ export default function Cartoes() {
                     {deletandoId === c.id ? (
                       <div className="flex items-center gap-1">
                         <button onClick={() => handleDelete(c.id)} className="text-xs text-zinc-900 dark:text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-lg">Sim</button>
-                        <button onClick={() => setDeletandoId(null)} className="text-xs bg-zinc-700 hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-1 rounded-lg">Não</button>
+                        <button onClick={() => setDeletandoId(null)} className="text-xs bg-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-1 rounded-lg">Não</button>
                       </div>
                     ) : (
                       <>
-                        <button onClick={() => openEdit(c)} className="p-1.5 hover:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-500 dark:hover:text-zinc-500"><Pencil size={14} /></button>
+                        <button onClick={() => openEdit(c)} className="p-1.5 hover:bg-zinc-50 dark:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-500 dark:hover:text-zinc-500"><Pencil size={14} /></button>
                         <button onClick={() => setDeletandoId(c.id)} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-zinc-500 hover:text-red-500"><Trash2 size={14} /></button>
                       </>
                     )}
@@ -191,7 +191,7 @@ export default function Cartoes() {
           </div>
           {formError && <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">{formError}</div>}
           <div className="flex gap-3 pt-1">
-            <button type="button" onClick={() => setModalOpen(false)} className="flex-1 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-xl text-sm font-medium transition-colors">Cancelar</button>
+            <button type="button" onClick={() => setModalOpen(false)} className="flex-1 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-xl text-sm font-medium transition-colors">Cancelar</button>
             <button type="submit" disabled={formLoading} className="flex-1 bg-primary-600 hover:bg-primary-700 text-zinc-900 dark:text-white py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
               {formLoading && <Loader2 size={14} className="animate-spin" />}
               {editando ? 'Salvar' : 'Criar cartão'}

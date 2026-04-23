@@ -90,7 +90,7 @@ export default function Sidebar() {
         </button>
 
         <div className="flex items-center gap-3 px-4 py-4 mb-2">
-          <div className="w-8 h-8 bg-zinc-800 rounded-xl flex items-center justify-center text-zinc-900 dark:text-white text-xs font-bold shrink-0">
+          <div className="w-8 h-8 bg-zinc-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center text-zinc-900 dark:text-white text-xs font-bold shrink-0">
             {initials}
           </div>
           <div className="min-w-0 flex-1">

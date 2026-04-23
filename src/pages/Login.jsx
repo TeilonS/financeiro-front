@@ -6,7 +6,7 @@ import api from '../api'
 import { Loader2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/40 focus:border-primary-500/40 transition-colors'
+const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/40 focus:border-primary-500/40 transition-colors'
 
 export default function Entrar() {
   const { login, user } = useAuth()

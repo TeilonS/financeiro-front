@@ -8,7 +8,7 @@ import { useMonthNavigation } from '../hooks/useMonthNavigation'
 
 const EMPTY_FORM = { categoriaId: '', valorLimite: '', mes: '', ano: '' }
 
-const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Metas() {
   const { mes, ano, prevMes, nextMes } = useMonthNavigation()
@@ -101,7 +101,7 @@ export default function Metas() {
           <p className="text-zinc-500 text-sm mt-0.5">Controle de orçamento por categoria</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
+          <div className="flex items-center gap-1 bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
             <button onClick={prevMes} className="p-1 hover:bg-zinc-700 rounded-lg transition-colors">
               <ChevronLeft size={16} className="text-zinc-500" />
             </button>
@@ -170,7 +170,7 @@ export default function Metas() {
                       <button onClick={() => handleDelete(m.id)}
                         className="text-xs text-zinc-900 dark:text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-lg transition-colors">Sim</button>
                       <button onClick={() => setDeletandoId(null)}
-                        className="text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-700 hover:bg-zinc-800 px-2 py-1 rounded-lg transition-colors">Não</button>
+                        className="text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 px-2 py-1 rounded-lg transition-colors">Não</button>
                     </div>
                   ) : (
                     <button
@@ -254,7 +254,7 @@ export default function Metas() {
 
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={() => setModalOpen(false)}
-              className="flex-1 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-xl text-sm font-medium transition-colors">
+              className="flex-1 border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-xl text-sm font-medium transition-colors">
               Cancelar
             </button>
             <button type="submit" disabled={formLoading}

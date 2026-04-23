@@ -15,7 +15,7 @@ const TIPOS = [
 const EMPTY = { nome: '', instituicao: '', tipo: 'RENDA_FIXA' }
 const EMPTY_SNAPSHOT = { mes: new Date().getMonth() + 1, ano: new Date().getFullYear(), valor: '' }
 
-const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Investimentos() {
   const [investimentos, setInvestimentos] = useState([])
