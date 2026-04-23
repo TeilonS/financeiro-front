@@ -3,20 +3,15 @@ import { Plus, Trash2, Loader2, Target, AlertTriangle, ChevronLeft, ChevronRight
 import Modal from '../components/Modal'
 import * as metasApi from '../api/metas'
 import * as catApi from '../api/categorias'
-
-const fmt = (v) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v ?? 0)
-
-const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+import { fmt, MESES } from '../utils/formatters'
+import { useMonthNavigation } from '../hooks/useMonthNavigation'
 
 const EMPTY_FORM = { categoriaId: '', valorLimite: '', mes: '', ano: '' }
 
-const inputCls = 'w-full px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-sm bg-white dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Metas() {
-  const now = new Date()
-  const [mes, setMes] = useState(now.getMonth() + 1)
-  const [ano, setAno] = useState(now.getFullYear())
+  const { mes, ano, prevMes, nextMes } = useMonthNavigation()
   const [metas, setMetas] = useState([])
   const [alertasList, setAlertasList] = useState([])
   const [categorias, setCategorias] = useState([])
@@ -27,15 +22,6 @@ export default function Metas() {
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState('')
   const [deletandoId, setDeletandoId] = useState(null)
-
-  function prevMes() {
-    if (mes === 1) { setMes(12); setAno(a => a - 1) }
-    else setMes(m => m - 1)
-  }
-  function nextMes() {
-    if (mes === 12) { setMes(1); setAno(a => a + 1) }
-    else setMes(m => m + 1)
-  }
 
   async function loadData() {
     setLoading(true)
@@ -111,22 +97,22 @@ export default function Metas() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Metas</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Controle de orçamento por categoria</p>
+          <h1 className="font-display text-xl font-semibold text-white">Metas</h1>
+          <p className="text-zinc-500 text-sm mt-0.5">Controle de orçamento por categoria</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl px-2 py-1.5 shadow-sm">
-            <button onClick={prevMes} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-              <ChevronLeft size={16} className="text-slate-500 dark:text-slate-400" />
+          <div className="flex items-center gap-1 bg-zinc-800 border border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
+            <button onClick={prevMes} className="p-1 hover:bg-zinc-700 rounded-lg transition-colors">
+              <ChevronLeft size={16} className="text-zinc-500" />
             </button>
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 min-w-[120px] text-center">{mesLabel}</span>
-            <button onClick={nextMes} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-              <ChevronRight size={16} className="text-slate-500 dark:text-slate-400" />
+            <span className="text-sm font-medium text-zinc-300 min-w-[120px] text-center">{mesLabel}</span>
+            <button onClick={nextMes} className="p-1 hover:bg-zinc-700 rounded-lg transition-colors">
+              <ChevronRight size={16} className="text-zinc-500" />
             </button>
           </div>
           <button
             onClick={openNew}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2"
+            className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2"
           >
             <Plus size={16} />
             Nova meta
@@ -160,36 +146,36 @@ export default function Metas() {
 
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <Loader2 size={28} className="animate-spin text-indigo-500" />
+          <Loader2 size={28} className="animate-spin text-primary-500" />
         </div>
       ) : metasFiltradas.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-16 text-center">
-          <Target size={36} className="text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-500 dark:text-slate-400 font-medium">Nenhuma meta para este mês</p>
-          <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Crie metas para controlar seus gastos por categoria.</p>
+        <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-16 text-center">
+          <Target size={36} className="text-zinc-500 dark:text-zinc-500 mx-auto mb-3" />
+          <p className="text-zinc-500 font-medium">Nenhuma meta para este mês</p>
+          <p className="text-zinc-500 text-sm mt-1">Crie metas para controlar seus gastos por categoria.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {metasFiltradas.map(m => {
             const pct = m.valorLimite > 0 ? ((m.valorGasto || 0) / m.valorLimite) * 100 : 0
             return (
-              <div key={m.id} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-5">
+              <div key={m.id} className="bg-zinc-900 rounded-xl border border-zinc-800 p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{m.categoriaNome || m.categoria?.nome || '—'}</p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Limite: {fmt(m.valorLimite)}</p>
+                    <p className="text-sm font-semibold text-zinc-200">{m.categoriaNome || m.categoria?.nome || '—'}</p>
+                    <p className="text-xs text-zinc-500 mt-0.5">Limite: {fmt(m.valorLimite)}</p>
                   </div>
                   {deletandoId === m.id ? (
                     <div className="flex items-center gap-1.5">
                       <button onClick={() => handleDelete(m.id)}
                         className="text-xs text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-lg transition-colors">Sim</button>
                       <button onClick={() => setDeletandoId(null)}
-                        className="text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 px-2 py-1 rounded-lg transition-colors">Não</button>
+                        className="text-xs text-zinc-300 bg-zinc-700 hover:bg-zinc-800 px-2 py-1 rounded-lg transition-colors">Não</button>
                     </div>
                   ) : (
                     <button
                       onClick={() => setDeletandoId(m.id)}
-                      className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-300 dark:text-slate-600 hover:text-red-500 transition-colors"
+                      className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-zinc-500 dark:text-zinc-500 hover:text-red-500 transition-colors"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -198,12 +184,12 @@ export default function Metas() {
 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Gasto: {fmt(m.valorGasto || 0)}</span>
+                    <span className="text-xs text-zinc-500">Gasto: {fmt(m.valorGasto || 0)}</span>
                     <span className={`text-xs font-semibold ${pct > 100 ? 'text-red-600' : pct >= 80 ? 'text-amber-600' : 'text-emerald-600'}`}>
                       {pct.toFixed(0)}%
                     </span>
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                  <div className="w-full bg-zinc-700 rounded-full h-2">
                     <div
                       className={`h-2 rounded-full transition-all ${progressColor(pct)}`}
                       style={{ width: `${Math.min(pct, 100)}%` }}
@@ -226,7 +212,7 @@ export default function Metas() {
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nova meta de orçamento">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Categoria (Despesa)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Categoria (Despesa)</label>
             <select required value={form.categoriaId} onChange={set('categoriaId')} className={inputCls}>
               <option value="">Selecione uma categoria</option>
               {catsDespesa.map(c => (
@@ -235,7 +221,7 @@ export default function Metas() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Valor limite (R$)</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Valor limite (R$)</label>
             <input
               type="number" required min="0.01" step="0.01" value={form.valorLimite} onChange={set('valorLimite')}
               placeholder="0,00" className={inputCls}
@@ -243,7 +229,7 @@ export default function Metas() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Mês</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Mês</label>
               <select required value={form.mes} onChange={set('mes')} className={inputCls}>
                 <option value="">Mês</option>
                 {MESES.map((m, i) => (
@@ -252,7 +238,7 @@ export default function Metas() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Ano</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Ano</label>
               <input
                 type="number" required min="2020" max="2099" value={form.ano} onChange={set('ano')}
                 placeholder="2026" className={inputCls}
@@ -268,11 +254,11 @@ export default function Metas() {
 
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={() => setModalOpen(false)}
-              className="flex-1 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-2.5 rounded-xl text-sm font-medium transition-colors">
+              className="flex-1 border border-zinc-700 hover:bg-zinc-800 text-zinc-300 py-2.5 rounded-xl text-sm font-medium transition-colors">
               Cancelar
             </button>
             <button type="submit" disabled={formLoading}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
+              className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
               {formLoading && <Loader2 size={14} className="animate-spin" />}
               Criar meta
             </button>

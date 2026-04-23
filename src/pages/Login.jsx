@@ -1,94 +1,184 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import * as authApi from '../api/auth'
-import { Wallet, Loader2 } from 'lucide-react'
+import api from '../api'
+import { Loader2 } from 'lucide-react'
+import toast from 'react-hot-toast'
 
-const inputCls = 'w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent'
+const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/40 focus:border-primary-500/40 transition-colors'
 
 export default function Login() {
-  const { login } = useAuth()
+  const { login, user } = useAuth()
   const navigate = useNavigate()
-  const [mode, setMode] = useState('login')
+  const [mode, setMode] = useState('login') // 'login', 'register', 'forgot'
   const [form, setForm] = useState({ nome: '', email: '', senha: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [serverWaking, setServerWaking] = useState(false)
+  const wakingTimer = useRef(null)
 
-  if (localStorage.getItem('token')) return <Navigate to="/" replace />
+  // Pré-aquece o backend (Render dorme após inatividade)
+  useEffect(() => {
+    api.get('/auth/ping').catch(() => {})
+  }, [])
+
+  // Mostra aviso de "iniciando servidor" se o login demorar mais de 3s
+  useEffect(() => {
+    if (loading) {
+      wakingTimer.current = setTimeout(() => setServerWaking(true), 3000)
+    } else {
+      clearTimeout(wakingTimer.current)
+      setServerWaking(false)
+    }
+    return () => clearTimeout(wakingTimer.current)
+  }, [loading])
+
+  if (user) return <Navigate to="/" replace />
 
   const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }))
 
   async function handleSubmit(e) {
     e.preventDefault(); setError(''); setLoading(true)
     try {
-      let res
       if (mode === 'login') {
-        res = await authApi.login(form.email, form.senha)
+        const res = await authApi.login(form.email, form.senha)
+        login({ nome: res.data.nome, email: res.data.email })
+        navigate('/')
+      } else if (mode === 'register') {
+        const res = await authApi.register(form.nome, form.email, form.senha)
+        login({ nome: res.data.nome, email: res.data.email })
+        navigate('/')
       } else {
-        res = await authApi.register(form.nome, form.email, form.senha)
+        await authApi.forgotPassword(form.email, form.senha)
+        toast.success('Senha redefinida com sucesso!')
+        setMode('login')
       }
-      login(res.data.token, { nome: res.data.nome, email: res.data.email })
-      navigate('/')
     } catch (err) {
-      setError(err.response?.data?.mensagem || 'Erro ao entrar. Verifique seus dados.')
+      setError(err.response?.data?.mensagem || 'Erro ao processar requisição.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex w-16 h-16 bg-indigo-600 rounded-2xl items-center justify-center mb-4 shadow-lg shadow-indigo-500/30">
-            <Wallet size={28} className="text-white" />
+    <div className="min-h-screen bg-[#050505] flex">
+
+      {/* Painel esquerdo — brand */}
+      <div className="hidden lg:flex lg:w-[420px] xl:w-[480px] shrink-0 flex-col justify-between px-12 py-12 border-r border-white/5 relative overflow-hidden bg-[#0A0A0A]">
+        {/* Marca */}
+        <div className="relative">
+          <div className="flex items-center gap-3 mb-24">
+            <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
+              <span className="font-sans font-bold text-white text-lg">F</span>
+            </div>
+            <span className="font-sans font-bold text-white text-xl tracking-tight">Financial Intel</span>
           </div>
-          <h1 className="text-2xl font-bold text-white">Financeiro Pessoal</h1>
-          <p className="text-slate-400 text-sm mt-1">Controle total das suas finanças</p>
+
+          <div className="space-y-8">
+            <h1 className="font-sans font-bold text-white text-4xl xl:text-5xl leading-tight tracking-tight">
+              Master your<br />
+              <span className="text-primary-500">financial life.</span>
+            </h1>
+            <p className="text-zinc-500 text-lg leading-relaxed max-w-xs">
+              Professional tools for personal growth. Track, analyze and grow your wealth.
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex bg-slate-100 rounded-xl p-1 mb-6">
-            <button
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${mode === 'login' ? 'bg-white shadow text-slate-900' : 'text-slate-500'}`}
-              onClick={() => setMode('login')}
-            >Entrar</button>
-            <button
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${mode === 'register' ? 'bg-white shadow text-slate-900' : 'text-slate-500'}`}
-              onClick={() => setMode('register')}
-            >Criar conta</button>
+        {/* Métricas decorativas */}
+        <div className="relative space-y-4">
+          {[
+            { label: 'Monthly Balance', value: 'R$ 2.840,00', color: 'text-emerald-500' },
+            { label: 'Fixed Expenses', value: 'R$ 1.560,00', color: 'text-primary-400' },
+            { label: 'Financial Goal', value: '73%', color: 'text-white' },
+          ].map(item => (
+            <div key={item.label} className="flex items-center justify-between bg-zinc-900/50 border border-white/5 rounded-2xl px-6 py-4 backdrop-blur-sm">
+              <span className="text-zinc-500 text-xs font-bold uppercase tracking-widest">{item.label}</span>
+              <span className={`font-sans font-bold text-sm tabular-nums ${item.color}`}>{item.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Painel direito — formulário */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-[#050505]">
+        <div className="w-full max-w-sm">
+
+          {/* Header mobile */}
+          <div className="lg:hidden mb-12 text-center">
+            <div className="inline-flex w-12 h-12 bg-primary-500 rounded-2xl items-center justify-center mb-4 shadow-lg shadow-primary-500/20">
+              <span className="font-sans font-bold text-white text-xl">F</span>
+            </div>
+            <p className="font-sans font-bold text-white text-2xl">Financial Intel</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-8">
+            <h1 className="font-sans font-bold text-white text-2xl tracking-tight">
+              {mode === 'login' ? 'Welcome Back' : mode === 'register' ? 'Get Started' : 'Reset Password'}
+            </h1>
+            <p className="text-zinc-500 text-sm mt-2">
+              {mode === 'login' ? 'Log in to your dashboard' : mode === 'register' ? 'Create your free account' : 'Enter your new password below'}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
             {mode === 'register' && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Nome</label>
-                <input type="text" required value={form.nome} onChange={set('nome')} placeholder="Seu nome completo" className={inputCls} />
+                <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Full Name</label>
+                <input type="text" required value={form.nome} onChange={set('nome')} placeholder="John Doe" className={inputCls} />
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
-              <input type="email" required value={form.email} onChange={set('email')} placeholder="seu@email.com" className={inputCls} />
+              <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Email Address</label>
+              <input type="email" required value={form.email} onChange={set('email')} placeholder="name@company.com" className={inputCls} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Senha</label>
+              <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">
+                {mode === 'forgot' ? 'New Password' : 'Password'}
+              </label>
               <input type="password" required value={form.senha} onChange={set('senha')} placeholder="••••••••" className={inputCls} />
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
-                {error}
-              </div>
+              <p className="text-primary-400 text-xs bg-primary-500/10 border border-primary-500/20 px-4 py-3 rounded-xl">{error}</p>
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-medium text-sm transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
+              className="w-full bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary-500/10 disabled:opacity-50 flex items-center justify-center gap-2 mt-4">
               {loading && <Loader2 size={16} className="animate-spin" />}
-              {mode === 'login' ? 'Entrar' : 'Criar conta'}
+              {loading
+                ? (serverWaking ? 'Starting Server...' : 'Processing...')
+                : (mode === 'login' ? 'Login' : mode === 'register' ? 'Create Account' : 'Reset Password')
+              }
             </button>
           </form>
+
+          <div className="space-y-4 mt-8">
+            {mode === 'login' && (
+              <p className="text-center">
+                <button
+                  onClick={() => { setMode('forgot'); setError('') }}
+                  className="text-zinc-500 hover:text-white text-xs transition-colors"
+                >
+                  Forgot your password?
+                </button>
+              </p>
+            )}
+
+            <p className="text-center text-zinc-600 text-xs">
+              {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+              <button
+                onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError('') }}
+                className="text-primary-500 hover:text-primary-400 font-bold transition-colors"
+              >
+                {mode === 'login' ? 'Sign up' : 'Login'}
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   )
 }
+

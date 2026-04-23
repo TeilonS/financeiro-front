@@ -17,6 +17,7 @@ const links = [
   { to: '/relatorios',   label: 'Relatórios',   Icon: BarChart2 },
   { to: '/recorrencias', label: 'Recorrências', Icon: RefreshCw },
   { to: '/backup',       label: 'Backup',       Icon: HardDrive },
+  { to: '/investimentos', label: 'Investimentos', Icon: PiggyBank },
 ]
 
 export default function Sidebar() {
@@ -34,62 +35,73 @@ export default function Sidebar() {
     : 'U'
 
   return (
-    <aside className="w-64 bg-slate-900 flex flex-col shrink-0">
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-6 border-b border-slate-800">
-        <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center">
-          <Wallet size={18} className="text-white" />
-        </div>
-        <div>
-          <p className="text-white font-semibold text-sm leading-none">Financeiro</p>
-          <p className="text-slate-400 text-xs mt-0.5">Pessoal</p>
+    <aside className="w-64 bg-[#0A0A0A] flex flex-col shrink-0 border-r border-white/5">
+
+      {/* Marca */}
+      <div className="px-6 py-8">
+        <div className="flex items-center gap-3">
+          {/* Ícone geométrico — identidade visual */}
+          <div className="w-8 h-8 bg-primary-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/20">
+            <Wallet size={16} className="text-white" />
+          </div>
+          <div>
+            <p className="font-sans font-bold text-white text-base leading-none tracking-tight">Financial</p>
+            <p className="text-[10px] text-zinc-500 mt-1 tracking-[0.2em] uppercase font-bold">Intelligence</p>
+          </div>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
         {links.map(({ to, label, Icon, exact }) => (
           <NavLink
             key={to}
             to={to}
             end={exact}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+              `group relative flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-200 ${
                 isActive
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-primary-500/10 text-white font-bold'
+                  : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5 font-medium'
               }`
             }
           >
-            <Icon size={18} />
-            {label}
+            {({ isActive }) => (
+              <>
+                <Icon size={18} className={isActive ? 'text-primary-500' : 'group-hover:text-zinc-200 transition-colors'} />
+                <span>{label}</span>
+                {isActive && (
+                   <div className="absolute right-2 w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                )}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
 
-      {/* User + Theme toggle */}
-      <div className="px-3 py-4 border-t border-slate-800">
-        {/* Theme toggle */}
+      {/* Footer */}
+      <div className="p-4 mt-auto border-t border-white/5 space-y-1">
         <button
           onClick={toggle}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white text-sm transition-all mb-1"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-zinc-200 hover:bg-white/5 text-sm font-medium transition-all"
         >
           {dark ? <Sun size={16} /> : <Moon size={16} />}
-          {dark ? 'Modo claro' : 'Modo escuro'}
+          <span>{dark ? 'Light Mode' : 'Dark Mode'}</span>
         </button>
 
-        <div className="flex items-center gap-3 px-3 mb-1">
-          <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0">
+        <div className="flex items-center gap-3 px-4 py-4 mb-2">
+          <div className="w-8 h-8 bg-zinc-800 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0">
             {initials}
           </div>
-          <div className="min-w-0">
-            <p className="text-white text-sm font-medium truncate">{user?.nome || 'Usuário'}</p>
-            <p className="text-slate-500 text-xs truncate">{user?.email || ''}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-white text-xs font-bold truncate">{user?.nome || 'Usuário'}</p>
+            <p className="text-[10px] text-zinc-500 font-medium">Premium Member</p>
           </div>
         </div>
+
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-red-400 text-sm transition-all"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-primary-400 hover:bg-primary-500/5 text-sm font-medium transition-all"
         >
           <LogOut size={16} />
           Sair

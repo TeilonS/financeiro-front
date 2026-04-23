@@ -1,26 +1,50 @@
-export default function StatCard({ label, value, icon: Icon, color = 'indigo', trend }) {
-  const colors = {
-    indigo: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400',
-    emerald: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
-    red: 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400',
-    amber: 'bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
-  }
+const borderColors = {
+  primary: 'border-primary-500/30',
+  emerald: 'border-emerald-500/30',
+  red:     'border-red-500/30',
+  amber:   'border-amber-400/30',
+  violet:  'border-violet-500/30',
+  sky:     'border-sky-500/30',
+}
+
+const iconColors = {
+  primary: 'text-primary-400',
+  emerald: 'text-emerald-400',
+  red:     'text-red-400',
+  amber:   'text-amber-400',
+  violet:  'text-violet-400',
+  sky:     'text-sky-400',
+}
+
+export default function StatCard({ label, value, icon: Icon, color = 'primary', subtitle, trend }) {
+  const border = borderColors[color] ?? borderColors.primary
+  const iconCls = iconColors[color] ?? iconColors.primary
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-slate-800">
+    <div className={`relative bg-zinc-900/50 backdrop-blur-sm rounded-2xl border ${border} p-6 overflow-hidden group transition-all hover:border-primary-500/50`}>
+      {/* Label + icon */}
       <div className="flex items-center justify-between mb-4">
-        <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">{label}</span>
-        {Icon && (
-          <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${colors[color]}`}>
-            <Icon size={18} />
-          </div>
-        )}
+        <p className="text-2xs font-bold text-zinc-500 uppercase tracking-[0.2em]">{label}</p>
+        <div className={`p-2 rounded-lg bg-zinc-800/50 ${iconCls}`}>
+          {Icon && <Icon size={16} />}
+        </div>
       </div>
-      <p className="text-2xl font-semibold text-slate-900 dark:text-white">{value}</p>
-      {trend !== undefined && (
-        <p className={`text-xs mt-1 ${trend >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
-          {trend >= 0 ? '▲' : '▼'} {Math.abs(trend)}% vs mês anterior
-        </p>
+
+      {/* Valor — protagonista */}
+      <p className="font-sans text-3xl font-bold text-white tracking-tight tabular-nums">{value}</p>
+
+      {/* Contexto */}
+      {(subtitle || trend !== undefined) && (
+        <div className="flex items-center gap-2 mt-4">
+          {trend !== undefined && (
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${trend >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+              {trend >= 0 ? '+' : ''}{trend}%
+            </span>
+          )}
+          {subtitle && (
+            <p className="text-xs text-zinc-500 font-medium">{subtitle}</p>
+          )}
+        </div>
       )}
     </div>
   )
