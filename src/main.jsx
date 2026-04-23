@@ -12,4 +12,4 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 // v2
-// release: 1776948973
+// ui-refresh: 1776950276

@@ -182,7 +182,7 @@ export default function Dashboard() {
           <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Visão Geral Inteligente</p>
           <h1 className="font-sans text-4xl font-bold text-zinc-900 dark:text-white tracking-tighter">{fmt(dadosResumo.saldo)}</h1>
           <div className="flex items-center gap-2 mt-4">
-             <div className="flex items-center gap-1 text-zinc-500 bg-white dark:bg-zinc-900/50 px-2 py-1 rounded-lg border border-zinc-100 dark:border-zinc-100 dark:border-white/5">
+             <div className="flex items-center gap-1 text-zinc-500 bg-white dark:bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-white/5 px-2 py-1 rounded-lg border border-zinc-100 dark:border-zinc-100 dark:border-white/5">
                 <button onClick={prevMes} className="p-0.5 hover:text-zinc-900 dark:text-white transition-colors"><ChevronLeft size={16} /></button>
                 <span className="text-[10px] font-bold uppercase tracking-widest min-w-[100px] text-center">{mesLabel}</span>
                 <button onClick={nextMes} className="p-0.5 hover:text-zinc-900 dark:text-white transition-colors"><ChevronRight size={16} /></button>
@@ -376,15 +376,15 @@ export default function Dashboard() {
                 
                 <div className="grid grid-cols-2 gap-4">
                    <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-sm">
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Reserve</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Reserva</p>
                       <p className="text-sm font-bold mt-1">{fmt(patrimonio.reservaEmergencia)}</p>
                    </div>
                    <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-sm">
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Invested</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Investido</p>
                       <p className="text-sm font-bold mt-1">{fmt(patrimonio.totalInvestimentos)}</p>
                    </div>
                    <div className="bg-black/10 p-3 rounded-2xl backdrop-blur-sm col-span-2">
-                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Debts</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Dívidas</p>
                       <p className="text-sm font-bold mt-1">{fmt(patrimonio.totalFaturas)}</p>
                    </div>
                 </div>
@@ -393,7 +393,7 @@ export default function Dashboard() {
 
             {/* Projection Card */}
             {previsao && (
-              <div className="bg-white dark:bg-zinc-900/50 rounded-3xl border border-zinc-100 dark:border-zinc-100 dark:border-white/5 p-8">
+              <div className="bg-white dark:bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-white/5 rounded-3xl border border-zinc-100 dark:border-zinc-100 dark:border-white/5 p-8">
                  <div className="flex items-center justify-between mb-6">
                     <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Projeção Mensal</h3>
                     <TrendingUp size={16} className="text-primary-400" />
@@ -418,7 +418,7 @@ export default function Dashboard() {
                  
                  <div className="mt-8 pt-8 border-t border-zinc-100 dark:border-zinc-100 dark:border-white/5">
                     <div className="flex justify-between items-end mb-2">
-                       <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Progresso</span>
+                       <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Progressooo</span>
                        <span className="text-xs font-bold text-zinc-900 dark:text-white">{Math.round((previsao.diasPassados / previsao.totalDiasMes) * 100)}%</span>
                     </div>
                     <div className="h-1.5 bg-zinc-50 dark:bg-zinc-800 rounded-full overflow-hidden">
@@ -431,8 +431,8 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Emergency Reserve Manager */}
-            <div className="bg-white dark:bg-zinc-900/50 rounded-3xl border border-zinc-100 dark:border-zinc-100 dark:border-white/5 p-8">
+            {/* Emergency Reserva Manager */}
+            <div className="bg-white dark:bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-white/5 rounded-3xl border border-zinc-100 dark:border-zinc-100 dark:border-white/5 p-8">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Reserva de Emergência</h3>
                 <ShieldCheck size={16} className="text-zinc-500" />
@@ -451,7 +451,7 @@ export default function Dashboard() {
                 <div className="flex items-end justify-between group">
                    <div>
                       <p className="text-3xl font-bold text-zinc-900 dark:text-white tabular-nums">{fmt(reserva)}</p>
-                      <p className="text-xs font-medium text-zinc-500 mt-1">Safety target achieved</p>
+                      <p className="text-xs font-medium text-zinc-500 mt-1">Meta de segurança atingida</p>
                    </div>
                    <button 
                      onClick={() => { setReservaInput(String(reserva)); setEditandoReserva(true) }}

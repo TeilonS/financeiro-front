@@ -45,7 +45,7 @@ export default function Sidebar() {
             <Wallet size={16} className="text-zinc-900 dark:text-white" />
           </div>
           <div>
-            <p className="font-sans font-bold text-zinc-900 dark:text-white text-base leading-none tracking-tight">Financial</p>
+            <p className="font-sans font-bold text-zinc-900 dark:text-white text-base leading-none tracking-tight">Financeiro</p>
             <p className="text-[10px] text-zinc-500 mt-1 tracking-[0.2em] uppercase font-bold">Inteligente</p>
           </div>
         </div>
@@ -61,8 +61,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `group relative flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-200 ${
                 isActive
-                  ? 'bg-primary-500/10 text-zinc-900 dark:text-white font-bold'
-                  : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-200 hover:bg-white/5 font-medium'
+                  ? 'bg-primary-500/10 text-primary-600 dark:text-white shadow-sm shadow-primary-500/5 font-bold'
+                  : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5 font-medium'
               }`
             }
           >
@@ -83,10 +83,10 @@ export default function Sidebar() {
       <div className="p-4 mt-auto border-t border-zinc-200 dark:border-white/5 space-y-1">
         <button
           onClick={toggle}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-zinc-800 dark:text-zinc-200 hover:bg-white/5 text-sm font-medium transition-all"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5 text-sm font-medium transition-all"
         >
           {dark ? <Sun size={16} /> : <Moon size={16} />}
-          <span>{dark ? 'Light Mode' : 'Dark Mode'}</span>
+          <span>{dark ? 'Modo Claro' : 'Modo Escuro'}</span>
         </button>
 
         <div className="flex items-center gap-3 px-4 py-4 mb-2">
@@ -95,7 +95,7 @@ export default function Sidebar() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-zinc-900 dark:text-white text-xs font-bold truncate">{user?.nome || 'Usuário'}</p>
-            <p className="text-[10px] text-zinc-500 font-medium">Premium Member</p>
+            <p className="text-[10px] text-zinc-500 font-medium">Membro Premium</p>
           </div>
         </div>
 

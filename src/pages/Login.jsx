@@ -50,7 +50,7 @@ export default function Entrar() {
         login({ nome: res.data.nome, email: res.data.email })
         navigate('/')
       } else {
-        await authApi.forgotPassword(form.email, form.senha)
+        await authApi.forgotSenha(form.email, form.senha)
         toast.success('Senha redefinida com sucesso!')
         setMode('login')
       }
@@ -72,7 +72,7 @@ export default function Entrar() {
             <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
               <span className="font-sans font-bold text-zinc-900 dark:text-white text-lg">F</span>
             </div>
-            <span className="font-sans font-bold text-zinc-900 dark:text-white text-xl tracking-tight">Financial Intel</span>
+            <span className="font-sans font-bold text-zinc-900 dark:text-white text-xl tracking-tight">Financeiro Intel</span>
           </div>
 
           <div className="space-y-8">
@@ -110,7 +110,7 @@ export default function Entrar() {
             <div className="inline-flex w-12 h-12 bg-primary-500 rounded-2xl items-center justify-center mb-4 shadow-lg shadow-primary-500/20">
               <span className="font-sans font-bold text-zinc-900 dark:text-white text-xl">F</span>
             </div>
-            <p className="font-sans font-bold text-zinc-900 dark:text-white text-2xl">Financial Intel</p>
+            <p className="font-sans font-bold text-zinc-900 dark:text-white text-2xl">Financeiro Intel</p>
           </div>
 
           <div className="mb-8">
@@ -130,12 +130,12 @@ export default function Entrar() {
               </div>
             )}
             <div>
-              <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Email Address</label>
+              <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">E-mail</label>
               <input type="email" required value={form.email} onChange={set('email')} placeholder="name@company.com" className={inputCls} />
             </div>
             <div>
               <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">
-                {mode === 'forgot' ? 'New Password' : 'Password'}
+                {mode === 'forgot' ? 'New Senha' : 'Senha'}
               </label>
               <input type="password" required value={form.senha} onChange={set('senha')} placeholder="••••••••" className={inputCls} />
             </div>

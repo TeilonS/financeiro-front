@@ -8,9 +8,9 @@ const borderColors = {
 }
 
 const iconColors = {
-  primary: 'text-primary-600 dark:text-primary-400',
-  emerald: 'text-emerald-600 dark:text-emerald-400',
-  red:     'text-red-600 dark:text-red-400',
+  primary: 'text-primary-600 dark:text-primary-600 dark:text-primary-400',
+  emerald: 'text-emerald-600 dark:text-emerald-600 dark:text-emerald-400',
+  red:     'text-red-600 dark:text-red-600 dark:text-red-400',
   amber:   'text-amber-600 dark:text-amber-400',
   violet:  'text-violet-600 dark:text-violet-400',
   sky:     'text-sky-600 dark:text-sky-400',
@@ -37,7 +37,7 @@ export default function StatCard({ label, value, icon: Icon, color = 'primary', 
       {(subtitle || trend !== undefined) && (
         <div className="flex items-center gap-2 mt-6">
           {trend !== undefined && (
-            <span className={`text-[10px] font-bold px-2 py-1 rounded-lg ${trend >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'}`}>
+            <span className={`text-[10px] font-bold px-2 py-1 rounded-lg ${trend >= 0 ? 'bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-600 dark:text-emerald-400' : 'bg-red-500/5 dark:bg-red-500/10 text-red-600 dark:text-red-600 dark:text-red-400'}`}>
               {trend >= 0 ? '+' : ''}{trend}%
             </span>
           )}
