@@ -108,7 +108,7 @@ export default function Recorrencias() {
       <div className="bg-white dark:bg-zinc-900 shadow-sm border border-zinc-100 dark:border-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 mb-6">
         <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4">Gerar lançamentos</h2>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1 bg-zinc-800 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5">
+          <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5">
             <button onClick={prevMes} className="p-1 hover:bg-white dark:hover:bg-zinc-800 rounded-lg transition-colors">
               <ChevronLeft size={16} className="text-zinc-400 dark:text-zinc-500 dark:text-zinc-500" />
             </button>
