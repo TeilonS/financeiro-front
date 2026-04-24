@@ -6,7 +6,7 @@ import * as catApi from '../api/categorias'
 import { fmt, MESES } from '../utils/formatters'
 import { useMonthNavigation } from '../hooks/useMonthNavigation'
 
-const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Orcamentos() {
   const { mes, ano, prevMes, nextMes } = useMonthNavigation()
@@ -58,11 +58,11 @@ export default function Orcamentos() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
-            <button onClick={prevMes} className="p-1 hover:bg-zinc-700 rounded-lg">
+            <button onClick={prevMes} className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg">
               <ChevronLeft size={16} className="text-zinc-500" />
             </button>
             <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 min-w-[120px] text-center">{mesLabel}</span>
-            <button onClick={nextMes} className="p-1 hover:bg-zinc-700 rounded-lg">
+            <button onClick={nextMes} className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg">
               <ChevronRight size={16} className="text-zinc-500" />
             </button>
           </div>
@@ -105,7 +105,7 @@ export default function Orcamentos() {
                   <span>Gasto: <strong className={o.percentualUsado >= 100 ? 'text-red-600' : 'text-zinc-700 dark:text-zinc-300'}>{fmt(o.valorGasto)}</strong></span>
                   <span>Limite: {fmt(o.valorLimite)}</span>
                 </div>
-                <div className="h-2.5 bg-zinc-700 rounded-full overflow-hidden">
+                <div className="h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                   <div className="h-full rounded-full transition-all"
                     style={{ width: `${o.percentualUsado}%`, backgroundColor: o.percentualUsado >= 100 ? '#ef4444' : o.percentualUsado >= 80 ? '#f59e0b' : '#14b8a6' }} />
                 </div>

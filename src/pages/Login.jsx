@@ -50,7 +50,7 @@ export default function Entrar() {
         login({ nome: res.data.nome, email: res.data.email })
         navigate('/')
       } else {
-        await authApi.forgotSenha(form.email, form.senha)
+        await authApi.forgotPassword(form.email, form.senha)
         toast.success('Senha redefinida com sucesso!')
         setMode('login')
       }
