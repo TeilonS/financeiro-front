@@ -88,7 +88,7 @@ export default function Dashboard() {
     async function load() {
       setLoading(true)
       try {
-        const [resResumo, resEvo, resCats, resPat, resOrc, resPrev] = await Promise.all([
+        const [resResumo, resEvo, resCats, resPat, resOrc, resPrev] = await Promise.allSettled([
           resumo(mes, ano),
           evolucao(ano),
           topCategorias({ mes, ano, tipo: 'DESPESA' }),
@@ -96,16 +96,20 @@ export default function Dashboard() {
           orcamentosApi.listar(mes, ano),
           fetchPrevisao(mes, ano)
         ])
-        setDadosResumo(resResumo.data)
-        setDadosEvolucao((resEvo.data.meses || []).map(m => ({ ...m, nomeMes: m.nomeMes.substring(0, 3) })))
-        setDadosCategorias(resCats.data || [])
-        setPatrimonio(resPat.data)
-        setOrcamentos(resOrc.data || [])
-        setPrevisao(resPrev.data)
-        
-        const rec = resResumo.data.totalReceitas || 0
-        const desp = resResumo.data.totalDespesas || 0
-        setHealthScore(rec > 0 ? Math.min(100, Math.round(((rec - desp) / rec) * 100)) : 0)
+
+        const ok = r => r.status === 'fulfilled'
+
+        if (ok(resResumo)) {
+          setDadosResumo(resResumo.value.data)
+          const rec = resResumo.value.data.totalReceitas || 0
+          const desp = resResumo.value.data.totalDespesas || 0
+          setHealthScore(rec > 0 ? Math.min(100, Math.round(((rec - desp) / rec) * 100)) : 0)
+        }
+        if (ok(resEvo)) setDadosEvolucao((resEvo.value.data.meses || []).map(m => ({ ...m, nomeMes: m.nomeMes.substring(0, 3) })))
+        if (ok(resCats)) setDadosCategorias(resCats.value.data || [])
+        if (ok(resPat)) setPatrimonio(resPat.value.data)
+        if (ok(resOrc)) setOrcamentos(resOrc.value.data || [])
+        if (ok(resPrev)) setPrevisao(resPrev.value.data)
       } catch { toast.error('Erro ao carregar dados.') }
       finally { setLoading(false) }
     }

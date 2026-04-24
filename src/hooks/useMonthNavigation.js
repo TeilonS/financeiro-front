@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+
 export function useMonthNavigation(initialDate = new Date()) {
   const [mes, setMes] = useState(initialDate.getMonth() + 1)
   const [ano, setAno] = useState(initialDate.getFullYear())
@@ -14,5 +16,7 @@ export function useMonthNavigation(initialDate = new Date()) {
     else setMes(m => m + 1)
   }
 
-  return { mes, ano, prevMes, nextMes }
+  const mesLabel = `${MESES[mes - 1]} ${ano}`
+
+  return { mes, ano, mesLabel, prevMes, nextMes }
 }

@@ -16,7 +16,9 @@ api.interceptors.response.use(
   err => {
     if (err.response?.status === 401 || err.response?.status === 403) {
       localStorage.removeItem('user')
+      localStorage.removeItem('token')
       window.location.replace('/login')
+      return new Promise(() => {}) // silencia erros downstream ao redirecionar
     }
     return Promise.reject(err)
   }
