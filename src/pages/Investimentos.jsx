@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Loader2, TrendingUp, History, Landmark } from 'lucide-react'
+import { Plus, Trash2, Loader2, TrendingUp, History, Landmark, ShieldCheck, Pencil, Check, X } from 'lucide-react'
 import Modal from '../components/Modal'
 import * as investimentosApi from '../api/investimentos'
+import * as usuarioApi from '../api/usuario'
 import { fmt } from '../utils/formatters'
 
 const TIPOS = [
@@ -28,17 +29,37 @@ export default function Investimentos() {
   const [historyModalOpen, setHistoryModalOpen] = useState(false)
   const [historico, setHistorico] = useState([])
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [reserva, setReserva] = useState(0)
+  const [editingReserva, setEditingReserva] = useState(false)
+  const [reservaInput, setReservaInput] = useState('')
+  const [reservaLoading, setReservaLoading] = useState(false)
 
   async function load() {
     setLoading(true)
     try {
-      const res = await investimentosApi.listar()
-      setInvestimentos(res.data || [])
+      const [resInv, resReserva] = await Promise.allSettled([
+        investimentosApi.listar(),
+        usuarioApi.getReserva()
+      ])
+      if (resInv.status === 'fulfilled') setInvestimentos(resInv.value.data || [])
+      if (resReserva.status === 'fulfilled') setReserva(resReserva.value.data?.valor || 0)
     } catch { alert('Erro ao carregar investimentos.') }
     finally { setLoading(false) }
   }
 
   useEffect(() => { load() }, [])
+
+  async function handleSalvarReserva() {
+    const valor = parseFloat(reservaInput)
+    if (isNaN(valor) || valor < 0) return
+    setReservaLoading(true)
+    try {
+      const res = await usuarioApi.atualizarReserva(valor)
+      setReserva(res.data?.valor || valor)
+      setEditingReserva(false)
+    } catch { alert('Erro ao salvar reserva.') }
+    finally { setReservaLoading(false) }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault(); setFormLoading(true)
@@ -93,15 +114,50 @@ export default function Investimentos() {
         </button>
       </div>
 
-      {investimentos.length > 0 && (
-        <div className="bg-primary-500 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-primary-500/20 mb-10">
-          <div className="absolute top-0 right-0 p-8 opacity-20">
-            <TrendingUp size={80} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        {investimentos.length > 0 && (
+          <div className="bg-primary-500 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-primary-500/20">
+            <div className="absolute top-0 right-0 p-8 opacity-20"><TrendingUp size={80} /></div>
+            <p className="text-[10px] font-bold uppercase tracking-widest mb-2 opacity-80">Patrimônio Total Investido</p>
+            <h2 className="text-4xl font-bold tabular-nums">{fmt(totalInvestido)}</h2>
           </div>
-          <p className="text-[10px] font-bold uppercase tracking-widest mb-2 opacity-80">Patrimônio Total Investido</p>
-          <h2 className="text-4xl font-bold tabular-nums">{fmt(totalInvestido)}</h2>
+        )}
+
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-white/5 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5"><ShieldCheck size={80} /></div>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Reserva de Emergência</p>
+            {!editingReserva && (
+              <button onClick={() => { setReservaInput(String(reserva)); setEditingReserva(true) }}
+                className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700 dark:hover:text-white">
+                <Pencil size={14} />
+              </button>
+            )}
+          </div>
+
+          {editingReserva ? (
+            <div className="flex items-center gap-3 mt-4">
+              <input
+                type="number" step="0.01" min="0" autoFocus
+                value={reservaInput}
+                onChange={e => setReservaInput(e.target.value)}
+                className={inputCls + ' flex-1'}
+                placeholder="0,00"
+              />
+              <button onClick={handleSalvarReserva} disabled={reservaLoading}
+                className="p-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors disabled:opacity-50">
+                {reservaLoading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+              </button>
+              <button onClick={() => setEditingReserva(false)}
+                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl text-zinc-400 transition-colors">
+                <X size={16} />
+              </button>
+            </div>
+          ) : (
+            <h2 className="text-4xl font-bold tabular-nums text-zinc-900 dark:text-white mt-2">{fmt(reserva)}</h2>
+          )}
         </div>
-      )}
+      </div>
 
       {loading ? (
         <div className="flex items-center justify-center h-64"><Loader2 size={32} className="animate-spin text-primary-500" /></div>
@@ -129,7 +185,7 @@ export default function Investimentos() {
                   <button onClick={() => openHistory(i)} className="p-2 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                     <History size={16} />
                   </button>
-                  <button onClick={() => handleDelete(id)} className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl text-zinc-400 hover:text-red-500 transition-colors">
+                  <button onClick={() => handleDelete(i.id)} className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl text-zinc-400 hover:text-red-500 transition-colors">
                     <Trash2 size={16} />
                   </button>
                 </div>
