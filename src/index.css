@@ -4,11 +4,19 @@
 
 * { box-sizing: border-box; }
 
+html {
+  background-color: #fafafa;
+}
+html.dark {
+  background-color: #050505;
+}
+
 body {
   margin: 0;
   font-family: 'DM Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: inherit;
 }
 
 /* Números financeiros sempre em tabular figures — evita "dança" de layout */
