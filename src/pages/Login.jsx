@@ -43,11 +43,11 @@ export default function Entrar() {
     try {
       if (mode === 'login') {
         const res = await authApi.login(form.email, form.senha)
-        login({ nome: res.data.nome, email: res.data.email })
+        login({ nome: res.data.nome, email: res.data.email }, res.data.token)
         navigate('/')
       } else if (mode === 'register') {
         const res = await authApi.register(form.nome, form.email, form.senha)
-        login({ nome: res.data.nome, email: res.data.email })
+        login({ nome: res.data.nome, email: res.data.email }, res.data.token)
         navigate('/')
       } else {
         await authApi.forgotPassword(form.email, form.senha)
