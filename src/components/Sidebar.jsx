@@ -35,7 +35,7 @@ export default function Sidebar() {
     : 'U'
 
   return (
-    <aside className="w-64 bg-white dark:bg-[#0A0A0A] flex flex-col shrink-0 border-r border-zinc-200 dark:border-white/5 transition-colors duration-300">
+    <aside className="w-64 bg-white dark:bg-zinc-900 flex flex-col shrink-0 border-r border-zinc-200 dark:border-white/5 transition-colors duration-300">
 
       {/* Marca */}
       <div className="px-6 py-8">

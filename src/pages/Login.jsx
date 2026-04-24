@@ -62,10 +62,10 @@ export default function Entrar() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#050505] flex">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex">
 
       {/* Painel esquerdo — brand */}
-      <div className="hidden lg:flex lg:w-[420px] xl:w-[480px] shrink-0 flex-col justify-between px-12 py-12 border-r border-zinc-200 dark:border-white/5 relative overflow-hidden bg-white dark:bg-[#0A0A0A]">
+      <div className="hidden lg:flex lg:w-[420px] xl:w-[480px] shrink-0 flex-col justify-between px-12 py-12 border-r border-zinc-200 dark:border-white/5 relative overflow-hidden bg-white dark:bg-zinc-900">
         {/* Marca */}
         <div className="relative">
           <div className="flex items-center gap-3 mb-24">
@@ -102,7 +102,7 @@ export default function Entrar() {
       </div>
 
       {/* Painel direito — formulário */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-zinc-50 dark:bg-[#050505]">
+      <div className="flex-1 flex items-center justify-center p-8 bg-zinc-50 dark:bg-zinc-950">
         <div className="w-full max-w-sm">
 
           {/* Header mobile */}

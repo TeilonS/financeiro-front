@@ -8,15 +8,18 @@ html {
   background-color: #fafafa;
 }
 html.dark {
-  background-color: #050505;
+  background-color: #09090b;
 }
 
 body {
   margin: 0;
+  background-color: #fafafa;
   font-family: 'DM Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: inherit;
+}
+html.dark body {
+  background-color: #09090b;
 }
 
 /* Números financeiros sempre em tabular figures — evita "dança" de layout */

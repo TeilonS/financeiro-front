@@ -83,7 +83,7 @@ export default function Backup() {
         </div>
 
         {/* Segurança */}
-        <div className="bg-zinc-100 dark:bg-zinc-800/30 rounded-3xl p-8 border border-zinc-200 dark:border-white/5">
+        <div className="bg-zinc-100 dark:bg-zinc-800 rounded-3xl p-8 border border-zinc-200 dark:border-white/5">
            <div className="flex items-center gap-2 mb-4 text-zinc-900 dark:text-white">
               <ShieldCheck size={20} className="text-primary-500" />
               <h3 className="font-bold">O que é incluído no backup</h3>
