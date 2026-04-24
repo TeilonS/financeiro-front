@@ -139,7 +139,7 @@ export default function Extrato() {
               className={`px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
                 formato === f.value
                   ? 'bg-primary-600 text-zinc-900 dark:text-white border-primary-600'
-                  : 'border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-800'
+                  : 'border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
               }`}>
               {f.label}
             </button>
@@ -154,7 +154,7 @@ export default function Extrato() {
           className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${
             dragging
               ? 'border-primary-400 bg-primary-50 dark:bg-primary-900/20'
-              : 'border-zinc-300 dark:border-zinc-700 hover:border-primary-300 hover:bg-zinc-800'
+              : 'border-zinc-300 dark:border-zinc-700 hover:border-primary-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
           }`}
         >
           {uploadLoading ? (
@@ -189,7 +189,7 @@ export default function Extrato() {
 
         {uploadResult && (
           <div className="mt-5 space-y-3">
-            <div className="bg-zinc-800 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm flex flex-wrap gap-4">
+            <div className="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm flex flex-wrap gap-4">
               <span className="text-zinc-700 dark:text-zinc-300">
                 <strong className="text-zinc-400 dark:text-zinc-500 dark:text-white">{uploadResult.totalTransacoes}</strong> transações importadas
               </span>
@@ -260,7 +260,7 @@ export default function Extrato() {
       <Modal open={!!confirmModal} onClose={() => setConfirmModal(null)} title="Confirmar transação" maxWidth="max-w-md">
         {confirmModal && (
           <div className="space-y-4">
-            <div className="bg-zinc-800 dark:bg-zinc-800 rounded-xl p-4 text-sm">
+            <div className="bg-zinc-100 dark:bg-zinc-800 rounded-xl p-4 text-sm">
               <p className="font-medium text-zinc-800 dark:text-zinc-200">{confirmModal.descricao}</p>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-zinc-400 dark:text-zinc-500">{formatDate(confirmModal.data)}</span>
