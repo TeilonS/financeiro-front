@@ -102,7 +102,7 @@ export default function Entrar() {
       </div>
 
       {/* Painel direito — formulário */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-zinc-50 dark:bg-zinc-950">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 bg-zinc-50 dark:bg-zinc-950">
         <div className="w-full max-w-sm">
 
           {/* Header mobile */}

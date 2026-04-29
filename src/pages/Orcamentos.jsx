@@ -50,13 +50,13 @@ export default function Orcamentos() {
   const categoriasDisponiveis = categorias.filter(c => !categoriasComOrcamento.has(c.id))
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <div>
           <h1 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">Orçamentos</h1>
           <p className="text-zinc-500 text-sm mt-0.5">Defina limites de gasto por categoria</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-1 bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
             <button onClick={prevMes} className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg">
               <ChevronLeft size={16} className="text-zinc-500" />

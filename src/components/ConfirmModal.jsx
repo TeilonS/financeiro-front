@@ -12,7 +12,7 @@ export default function ConfirmModal({ open, onClose, onConfirm, title, descript
             <AlertTriangle size={18} className="text-red-600 dark:text-red-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-zinc-500 dark:text-zinc-900 dark:text-white text-sm">{title}</p>
+            <p className="font-semibold text-zinc-500 dark:text-white text-sm">{title}</p>
             {description && (
               <p className="text-zinc-500 dark:text-zinc-500 text-xs mt-1">{description}</p>
             )}

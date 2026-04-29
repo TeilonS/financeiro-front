@@ -11,7 +11,7 @@ import { useMonthNavigation } from '../hooks/useMonthNavigation'
 
 const EMPTY_FORM = { descricao: '', valor: '', data: '', tipo: 'DESPESA', categoriaId: '' }
 
-const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
+const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
 export default function Lancamentos() {
   const { mes, ano, prevMes, nextMes } = useMonthNavigation()
@@ -108,49 +108,49 @@ export default function Lancamentos() {
     : lancamentos
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <div>
           <h1 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">Lançamentos</h1>
           <p className="text-zinc-500 text-sm mt-0.5">Receitas e despesas do período</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button onClick={handleExport} disabled={exportLoading}
-            className="border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-60">
+            className="border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-60">
             {exportLoading ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
-            Exportar CSV
+            <span className="hidden sm:inline">Exportar CSV</span>
           </button>
           <button onClick={openNew}
-            className="bg-primary-600 hover:bg-primary-700 text-zinc-900 dark:text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2">
-            <Plus size={16} /> Novo lançamento
+            className="bg-primary-600 hover:bg-primary-700 text-zinc-900 dark:text-white px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2">
+            <Plus size={16} /> <span className="hidden sm:inline">Novo lançamento</span><span className="sm:hidden">Novo</span>
           </button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3 mb-5">
+      <div className="flex flex-wrap items-center gap-2 mb-5">
         <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl px-2 py-1.5 shadow-sm">
           <button onClick={prevMes} className="p-1 hover:bg-zinc-50 dark:bg-zinc-800 rounded-lg">
             <ChevronLeft size={16} className="text-zinc-500" />
           </button>
-          <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200 min-w-[120px] text-center">{mesLabel}</span>
+          <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200 min-w-[110px] text-center">{mesLabel}</span>
           <button onClick={nextMes} className="p-1 hover:bg-zinc-50 dark:bg-zinc-800 rounded-lg">
             <ChevronRight size={16} className="text-zinc-500" />
           </button>
         </div>
 
-        <div className="relative flex-1 max-w-xs">
+        <div className="relative flex-1 min-w-[140px]">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input type="text" value={busca} onChange={e => setBusca(e.target.value)}
-            placeholder="Buscar descrição ou categoria..."
-            className="w-full pl-8 pr-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-900 dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500" />
+            placeholder="Buscar..."
+            className="w-full pl-8 pr-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500" />
         </div>
 
         <div className="flex bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl p-1 gap-1 shadow-sm">
           {['TODOS', 'RECEITA', 'DESPESA'].map(t => (
             <button key={t} onClick={() => setTipoFiltro(t)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${tipoFiltro === t ? 'bg-primary-600 text-zinc-900 dark:text-white' : 'text-zinc-500 hover:bg-zinc-50 dark:bg-zinc-800'}`}>
-              {t === 'TODOS' ? 'Todos' : t === 'RECEITA' ? 'Receitas' : 'Despesas'}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${tipoFiltro === t ? 'bg-primary-600 text-zinc-900 dark:text-white' : 'text-zinc-500 hover:bg-zinc-50 dark:bg-zinc-800'}`}>
+              {t === 'TODOS' ? 'Todos' : t === 'RECEITA' ? 'Rec.' : 'Desp.'}
             </button>
           ))}
         </div>
@@ -174,45 +174,47 @@ export default function Lancamentos() {
             }
           />
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Data</th>
-                <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Descrição</th>
-                <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Categoria</th>
-                <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Tipo</th>
-                <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Valor</th>
-                <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wide px-6 py-3">Ações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800">
-              {lancamentosFiltrados.map((l) => (
-                <tr key={l.id} className="hover:bg-zinc-50 dark:bg-zinc-800/40 transition-colors">
-                  <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">{formatDate(l.data)}</td>
-                  <td className="px-6 py-4 text-sm font-medium text-zinc-800 dark:text-zinc-200">{l.descricao}</td>
-                  <td className="px-6 py-4 text-sm text-zinc-500">{l.categoriaNome || l.categoria?.nome || '—'}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${l.tipo === 'RECEITA' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'}`}>
-                      {l.tipo}
-                    </span>
-                  </td>
-                  <td className={`px-6 py-4 text-sm font-semibold text-right ${l.tipo === 'RECEITA' ? 'text-emerald-600' : 'text-red-500'}`}>
-                    {l.tipo === 'RECEITA' ? '+' : '-'}{fmt(l.valor)}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-1">
-                      <button onClick={() => openEdit(l)} className="p-2 hover:bg-zinc-50 dark:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-500 dark:hover:text-zinc-500">
-                        <Pencil size={15} />
-                      </button>
-                      <button onClick={() => setConfirmId(l.id)} className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-zinc-500 hover:text-red-500">
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px]">
+              <thead>
+                <tr className="border-b border-zinc-200 dark:border-zinc-800">
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3">Data</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3">Descrição</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3 hidden sm:table-cell">Categoria</th>
+                  <th className="text-left text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3">Tipo</th>
+                  <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3">Valor</th>
+                  <th className="text-right text-xs font-medium text-zinc-500 uppercase tracking-wide px-4 md:px-6 py-3">Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {lancamentosFiltrados.map((l) => (
+                  <tr key={l.id} className="hover:bg-zinc-50 dark:bg-zinc-800/40 transition-colors">
+                    <td className="px-4 md:px-6 py-3 text-sm text-zinc-600 dark:text-zinc-400 whitespace-nowrap">{formatDate(l.data)}</td>
+                    <td className="px-4 md:px-6 py-3 text-sm font-medium text-zinc-800 dark:text-zinc-200 max-w-[150px] truncate">{l.descricao}</td>
+                    <td className="px-4 md:px-6 py-3 text-sm text-zinc-500 hidden sm:table-cell">{l.categoriaNome || l.categoria?.nome || '—'}</td>
+                    <td className="px-4 md:px-6 py-3">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${l.tipo === 'RECEITA' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'}`}>
+                        {l.tipo === 'RECEITA' ? 'REC' : 'DES'}
+                      </span>
+                    </td>
+                    <td className={`px-4 md:px-6 py-3 text-sm font-semibold text-right whitespace-nowrap ${l.tipo === 'RECEITA' ? 'text-emerald-600' : 'text-red-500'}`}>
+                      {l.tipo === 'RECEITA' ? '+' : '-'}{fmt(l.valor)}
+                    </td>
+                    <td className="px-4 md:px-6 py-3">
+                      <div className="flex items-center justify-end gap-1">
+                        <button onClick={() => openEdit(l)} className="p-1.5 hover:bg-zinc-50 dark:bg-zinc-800 rounded-lg text-zinc-500">
+                          <Pencil size={14} />
+                        </button>
+                        <button onClick={() => setConfirmId(l.id)} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-zinc-500 hover:text-red-500">
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

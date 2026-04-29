@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 import {
   LayoutDashboard, Receipt, Tag, Target,
-  FileUp, BarChart2, RefreshCw, LogOut, Wallet, CreditCard, PiggyBank, Moon, Sun, HardDrive
+  FileUp, BarChart2, RefreshCw, LogOut, Wallet, CreditCard, PiggyBank, Moon, Sun, HardDrive, X
 } from 'lucide-react'
 
 const links = [
@@ -20,7 +20,7 @@ const links = [
   { to: '/investimentos', label: 'Investimentos', Icon: PiggyBank },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth()
   const { dark, toggle } = useTheme()
   const navigate = useNavigate()
@@ -30,15 +30,26 @@ export default function Sidebar() {
     navigate('/login')
   }
 
+  function handleNavClick() {
+    if (onClose) onClose()
+  }
+
   const initials = user?.nome
     ? user.nome.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
     : 'U'
 
   return (
-    <aside className="w-64 bg-white dark:bg-zinc-900 flex flex-col shrink-0 border-r border-zinc-200 dark:border-white/5 transition-colors duration-300">
+    <aside className={`
+      fixed inset-y-0 left-0 z-30 w-64
+      md:relative md:translate-x-0
+      bg-white dark:bg-zinc-900 flex flex-col shrink-0
+      border-r border-zinc-200 dark:border-white/5
+      transition-transform duration-300
+      ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+    `}>
 
       {/* Marca */}
-      <div className="px-6 py-8">
+      <div className="px-6 py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-primary-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/20">
             <Wallet size={16} className="text-white" />
@@ -48,6 +59,12 @@ export default function Sidebar() {
             <p className="text-[10px] text-zinc-500 mt-1 tracking-[0.2em] uppercase font-bold">Inteligente</p>
           </div>
         </div>
+        <button
+          onClick={onClose}
+          className="md:hidden p-1.5 rounded-xl text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        >
+          <X size={16} />
+        </button>
       </div>
 
       {/* Nav */}
@@ -57,6 +74,7 @@ export default function Sidebar() {
             key={to}
             to={to}
             end={exact}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `group relative flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-200 ${
                 isActive

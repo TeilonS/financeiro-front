@@ -42,7 +42,7 @@ export default function Backup() {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto min-h-screen transition-colors duration-300">
+    <div className="p-4 md:p-8 max-w-4xl mx-auto min-h-screen transition-colors duration-300">
       <div className="mb-10">
         <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Backup</h1>
         <p className="text-zinc-500 text-sm mt-2">Exporte ou restaure todos os seus dados com segurança</p>

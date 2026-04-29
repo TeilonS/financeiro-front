@@ -250,18 +250,18 @@ export default function Relatorios() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto min-h-screen transition-colors duration-300">
-      <div className="flex items-center justify-between mb-10">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen transition-colors duration-300">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6 md:mb-10">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Relatórios</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Relatórios</h1>
           <p className="text-zinc-500 text-sm mt-2">Análise detalhada das suas finanças</p>
         </div>
-        <button onClick={handleExportar} className="flex items-center gap-2 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all border border-zinc-200 dark:border-zinc-700 shadow-sm">
+        <button onClick={handleExportar} className="flex items-center gap-2 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all border border-zinc-200 dark:border-zinc-700 shadow-sm">
           <FileDown size={18} className="text-primary-500" /> Exportar CSV
         </button>
       </div>
 
-      <div className="flex bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-1.5 gap-1 mb-10 w-fit shadow-sm">
+      <div className="flex flex-wrap bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-1.5 gap-1 mb-6 md:mb-10 w-fit shadow-sm">
         {['evolucao', 'top', 'comparativo'].map(id => (
           <button key={id} onClick={() => setTab(id)}
             className={`px-8 py-2 rounded-xl text-sm font-bold transition-all ${

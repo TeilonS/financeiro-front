@@ -115,8 +115,8 @@ export default function Extrato() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <div>
           <h1 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">Importar Extrato</h1>
           <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-0.5">Importe seu extrato bancário para classificar transações</p>

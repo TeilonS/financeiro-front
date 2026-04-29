@@ -100,8 +100,8 @@ export default function Investimentos() {
   const totalInvestido = investimentos.reduce((s, i) => s + (i.saldoAtual || 0), 0)
 
   return (
-    <div className="p-8 max-w-7xl mx-auto min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 md:mb-10">
         <div>
           <h1 className="font-sans text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">Investimentos</h1>
           <p className="text-zinc-500 text-sm mt-2">Gestão de patrimônio e evolução mensal</p>

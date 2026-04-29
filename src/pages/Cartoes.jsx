@@ -61,11 +61,11 @@ export default function Cartoes() {
   const totalLimite = cartoes.reduce((s, c) => s + (c.limite || 0), 0)
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <div>
           <h1 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">Cartões de Crédito</h1>
-          <p className="text-zinc-400 dark:text-zinc-500 dark:text-zinc-500 text-sm mt-0.5">Acompanhe faturas e limites</p>
+          <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-0.5">Acompanhe faturas e limites</p>
         </div>
         <button onClick={openNew} className="bg-primary-600 hover:bg-primary-700 text-zinc-900 dark:text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2">
           <Plus size={16} /> Novo cartão

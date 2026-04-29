@@ -119,10 +119,10 @@ export default function Dashboard() {
   if (loading) return <div className="p-8"><div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"><SkeletonStatCard /><SkeletonStatCard /><SkeletonStatCard /></div></div>
 
   return (
-    <div className="p-8 max-w-[1400px] mx-auto min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
-      
+    <div className="p-4 md:p-8 max-w-[1400px] mx-auto min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+
       {/* Top Section */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 mb-8 md:mb-12 items-center">
         <div className="md:col-span-4">
           <p className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Visão Geral Inteligente</p>
           <h1 className="font-sans text-4xl font-bold text-zinc-900 dark:text-white tracking-tighter">{fmt(dadosResumo.saldo)}</h1>
@@ -151,16 +151,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-8 space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
+          <div className="lg:col-span-8 space-y-4 md:space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
               <StatCard label="Receitas Totais" value={fmt(dadosResumo.totalReceitas)} icon={TrendingUp} color="emerald" trend={12} />
               <StatCard label="Despesas Totais" value={fmt(dadosResumo.totalDespesas)} icon={TrendingDown} color="red" trend={-5} />
               <StatCard label="Lucro Líquido" value={fmt(dadosResumo.saldo)} icon={Wallet} color="primary" />
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-white/5 p-8 shadow-sm">
-              <div className="flex items-center justify-between mb-8">
+            <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-white/5 p-4 md:p-8 shadow-sm">
+              <div className="flex items-center justify-between mb-6 md:mb-8">
                 <div>
                   <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Evolução do Fluxo de Caixa</h2>
                   <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">Acompanhamento de performance mensal</p>
