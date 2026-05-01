@@ -124,19 +124,19 @@ export default function Investimentos() {
         )}
 
         <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-white/5 shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5"><ShieldCheck size={80} /></div>
-          <div className="flex items-center justify-between mb-2">
+          <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><ShieldCheck size={80} /></div>
+          <div className="relative z-10 flex items-center justify-between mb-2">
             <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Reserva de Emergência</p>
             {!editingReserva && (
               <button onClick={() => { setReservaInput(String(reserva)); setEditingReserva(true) }}
-                className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700 dark:hover:text-white">
+                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700 dark:hover:text-white cursor-pointer">
                 <Pencil size={14} />
               </button>
             )}
           </div>
 
           {editingReserva ? (
-            <div className="flex items-center gap-3 mt-4">
+            <div className="relative z-10 flex items-center gap-3 mt-4">
               <input
                 type="number" step="0.01" min="0" autoFocus
                 value={reservaInput}
