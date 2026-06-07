@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Plus, Pencil, Trash2, Loader2, CreditCard, AlertCircle } from 'lucide-react'
 import Modal from '../components/Modal'
+import FaturaModal from '../components/FaturaModal'
 import * as cartoesApi from '../api/cartoes'
 import { fmt } from '../utils/formatters'
 
 const CORES = ['#EF4444', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#ec4899']
 
-const EMPTY = { nome: '', limite: '', faturaAtual: '', diaVencimento: '', cor: '#EF4444' }
+const EMPTY = { nome: '', limite: '', diaVencimento: '', cor: '#EF4444' }
 
 const inputCls = 'w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500'
 
@@ -20,6 +21,7 @@ export default function Cartoes() {
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState('')
   const [deletandoId, setDeletandoId] = useState(null)
+  const [faturaCartao, setFaturaCartao] = useState(null)
 
   async function load() {
     setLoading(true)
@@ -37,14 +39,14 @@ export default function Cartoes() {
   function openNew() { setEditando(null); setForm(EMPTY); setFormError(''); setModalOpen(true) }
   function openEdit(c) {
     setEditando(c)
-    setForm({ nome: c.nome, limite: String(c.limite), faturaAtual: String(c.faturaAtual ?? 0), diaVencimento: String(c.diaVencimento), cor: c.cor || '#EF4444' })
+    setForm({ nome: c.nome, limite: String(c.limite), diaVencimento: String(c.diaVencimento), cor: c.cor || '#EF4444' })
     setFormError(''); setModalOpen(true)
   }
 
   async function handleSubmit(e) {
     e.preventDefault(); setFormError(''); setFormLoading(true)
     try {
-      const payload = { nome: form.nome, limite: parseFloat(form.limite), faturaAtual: parseFloat(form.faturaAtual || 0), diaVencimento: parseInt(form.diaVencimento), cor: form.cor }
+      const payload = { nome: form.nome, limite: parseFloat(form.limite), diaVencimento: parseInt(form.diaVencimento), cor: form.cor }
       if (editando) await cartoesApi.atualizar(editando.id, payload)
       else await cartoesApi.criar(payload)
       setModalOpen(false); load()
@@ -153,10 +155,24 @@ export default function Cartoes() {
                   <span className="text-zinc-400 dark:text-zinc-500 dark:text-zinc-500">Disponível</span>
                   <span className="font-semibold text-emerald-600">{fmt(c.limiteDisponivel)}</span>
                 </div>
+                <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                  <button onClick={() => setFaturaCartao(c)}
+                          className="w-full text-xs font-medium text-primary-600 dark:text-primary-400 hover:underline">
+                    Editar fatura
+                  </button>
+                </div>
               </div>
             )
           })}
         </div>
+      )}
+
+      {faturaCartao && (
+        <FaturaModal
+          cartao={faturaCartao}
+          onClose={() => setFaturaCartao(null)}
+          onSaved={load}
+        />
       )}
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editando ? 'Editar cartão' : 'Novo cartão'} maxWidth="max-w-md">
@@ -165,15 +181,9 @@ export default function Cartoes() {
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Nome do cartão</label>
             <input type="text" required value={form.nome} onChange={set('nome')} placeholder="Ex: Nubank, Itaú Platinum..." className={inputCls} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Limite (R$)</label>
-              <input type="number" required min="0" step="0.01" value={form.limite} onChange={set('limite')} placeholder="0,00" className={inputCls} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Fatura atual (R$)</label>
-              <input type="number" min="0" step="0.01" value={form.faturaAtual} onChange={set('faturaAtual')} placeholder="0,00" className={inputCls} />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Limite (R$)</label>
+            <input type="number" required min="0" step="0.01" value={form.limite} onChange={set('limite')} placeholder="0,00" className={inputCls} />
           </div>
           <div>
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Dia do vencimento</label>
