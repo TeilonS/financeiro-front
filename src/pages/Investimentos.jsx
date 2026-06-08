@@ -21,6 +21,7 @@ export default function Investimentos() {
   const [investimentos, setInvestimentos] = useState([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
+  const [editandoInv, setEditandoInv] = useState(null)
   const [form, setForm] = useState(EMPTY)
   const [formLoading, setFormLoading] = useState(false)
   const [snapshotModalOpen, setSnapshotModalOpen] = useState(false)
@@ -64,10 +65,17 @@ export default function Investimentos() {
   async function handleSubmit(e) {
     e.preventDefault(); setFormLoading(true)
     try {
-      await investimentosApi.criar(form)
-      setModalOpen(false); load()
-    } catch { alert('Erro ao criar investimento.') }
+      if (editandoInv) await investimentosApi.atualizar(editandoInv.id, form)
+      else await investimentosApi.criar(form)
+      setModalOpen(false); setEditandoInv(null); load()
+    } catch { alert(editandoInv ? 'Erro ao atualizar investimento.' : 'Erro ao criar investimento.') }
     finally { setFormLoading(false) }
+  }
+
+  function openEdit(inv) {
+    setEditandoInv(inv)
+    setForm({ nome: inv.nome, instituicao: inv.instituicao, tipo: inv.tipo })
+    setModalOpen(true)
   }
 
   async function handleSnapshotSubmit(e) {
@@ -107,7 +115,7 @@ export default function Investimentos() {
           <p className="text-zinc-500 text-sm mt-2">Gestão de patrimônio e evolução mensal</p>
         </div>
         <button 
-          onClick={() => { setForm(EMPTY); setModalOpen(true) }} 
+          onClick={() => { setEditandoInv(null); setForm(EMPTY); setModalOpen(true) }}
           className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary-500/10 flex items-center gap-2"
         >
           <Plus size={18} /> Novo Investimento
@@ -182,6 +190,9 @@ export default function Investimentos() {
                   </div>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onClick={() => openEdit(i)} className="p-2 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                    <Pencil size={16} />
+                  </button>
                   <button onClick={() => openHistory(i)} className="p-2 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                     <History size={16} />
                   </button>
@@ -216,7 +227,7 @@ export default function Investimentos() {
       )}
 
       {/* Modais */}
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Novo Investimento">
+      <Modal open={modalOpen} onClose={() => { setModalOpen(false); setEditandoInv(null) }} title={editandoInv ? 'Editar Investimento' : 'Novo Investimento'}>
         <form onSubmit={handleSubmit} className="space-y-6 p-2">
           <div>
             <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Nome do Ativo</label>
@@ -233,7 +244,7 @@ export default function Investimentos() {
             </select>
           </div>
           <button type="submit" disabled={formLoading} className="w-full bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-2xl font-bold text-sm transition-all disabled:opacity-50">
-            {formLoading ? 'Salvando...' : 'Salvar Investimento'}
+            {formLoading ? 'Salvando...' : (editandoInv ? 'Atualizar Investimento' : 'Salvar Investimento')}
           </button>
         </form>
       </Modal>

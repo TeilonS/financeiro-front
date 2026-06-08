@@ -59,7 +59,7 @@ export default function Cartoes() {
     catch { setError('Erro ao excluir cartão.') }
   }
 
-  const totalFaturas = cartoes.reduce((s, c) => s + (c.faturaAtual || 0), 0)
+  const totalFaturas = cartoes.reduce((s, c) => s + (c.faturaMesAtual || 0), 0)
   const totalLimite = cartoes.reduce((s, c) => s + (c.limite || 0), 0)
 
   return (
@@ -104,7 +104,7 @@ export default function Cartoes() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cartoes.map(c => {
-            const pct = c.limite > 0 ? Math.min((c.faturaAtual / c.limite) * 100, 100) : 0
+            const pct = c.limite > 0 ? Math.min((c.faturaMesAtual / c.limite) * 100, 100) : 0
             const venceEm = (() => {
               const hoje = new Date()
               const venc = new Date(hoje.getFullYear(), hoje.getMonth(), c.diaVencimento)
@@ -142,7 +142,7 @@ export default function Cartoes() {
 
                 <div className="mb-3">
                   <div className="flex justify-between text-xs text-zinc-400 dark:text-zinc-500 dark:text-zinc-500 mb-1.5">
-                    <span>Fatura: <strong className="text-zinc-800 dark:text-zinc-200">{fmt(c.faturaAtual)}</strong></span>
+                    <span>Fatura: <strong className="text-zinc-800 dark:text-zinc-200">{fmt(c.faturaMesAtual)}</strong></span>
                     <span>Limite: {fmt(c.limite)}</span>
                   </div>
                   <div className="h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
