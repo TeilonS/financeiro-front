@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
+import ResetPassword from './pages/ResetPassword'
 
 const Dashboard    = lazy(() => import('./pages/Dashboard'))
 const Lancamentos  = lazy(() => import('./pages/Lancamentos'))
@@ -45,6 +46,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
               <Route index element={<Suspense fallback={<PageLoader />}><Dashboard /></Suspense>} />
               <Route path="lancamentos" element={<Suspense fallback={<PageLoader />}><Lancamentos /></Suspense>} />

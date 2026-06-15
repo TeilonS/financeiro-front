@@ -12,7 +12,7 @@ export default function Entrar() {
   const { login, user } = useAuth()
   const navigate = useNavigate()
   const [mode, setMode] = useState('login') // 'login', 'register', 'forgot'
-  const [form, setForm] = useState({ nome: '', email: '', senha: '' })
+  const [form, setForm] = useState({ nome: '', email: '', senha: '', confirmar: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [serverWaking, setServerWaking] = useState(false)
@@ -50,8 +50,8 @@ export default function Entrar() {
         login({ nome: res.data.nome, email: res.data.email }, res.data.token)
         navigate('/')
       } else {
-        await authApi.forgotPassword(form.email, form.senha)
-        toast.success('Senha redefinida com sucesso!')
+        await authApi.forgotPassword(form.email)
+        toast.success('Email enviado! Verifique sua caixa de entrada.')
         setMode('login')
       }
     } catch (err) {
@@ -118,7 +118,7 @@ export default function Entrar() {
               {mode === 'login' ? 'Bem-vindo de volta' : mode === 'register' ? 'Começar agora' : 'Redefinir Senha'}
             </h1>
             <p className="text-zinc-500 text-sm mt-2">
-              {mode === 'login' ? 'Entre no seu painel' : mode === 'register' ? 'Create your free account' : 'Digite sua nova senha abaixo'}
+              {mode === 'login' ? 'Entre no seu painel' : mode === 'register' ? 'Crie sua conta gratuita' : 'Informe seu email e enviaremos um link para redefinir sua senha'}
             </p>
           </div>
 
@@ -133,12 +133,12 @@ export default function Entrar() {
               <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">E-mail</label>
               <input type="email" required value={form.email} onChange={set('email')} placeholder="name@company.com" className={inputCls} />
             </div>
-            <div>
-              <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">
-                {mode === 'forgot' ? 'New Senha' : 'Senha'}
-              </label>
-              <input type="password" required value={form.senha} onChange={set('senha')} placeholder="••••••••" className={inputCls} />
-            </div>
+            {mode !== 'forgot' && (
+              <div>
+                <label className="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Senha</label>
+                <input type="password" required value={form.senha} onChange={set('senha')} placeholder="••••••••" className={inputCls} />
+              </div>
+            )}
 
             {error && (
               <p className="text-primary-400 text-xs bg-primary-500/10 border border-primary-500/20 px-4 py-3 rounded-xl">{error}</p>
@@ -149,7 +149,7 @@ export default function Entrar() {
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading
                 ? (serverWaking ? 'Iniciando servidor...' : 'Processando...')
-                : (mode === 'login' ? 'Entrar' : mode === 'register' ? 'Criar Conta' : 'Redefinir Senha')
+                : (mode === 'login' ? 'Entrar' : mode === 'register' ? 'Criar Conta' : 'Enviar link de recuperação')
               }
             </button>
           </form>
