@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Wallet, Loader2, S
 import StatCard from '../components/StatCard'
 import { SkeletonStatCard } from '../components/SkeletonCard'
 import { resumo, listar } from '../api/lancamentos'
-import { evolucao, topCategorias, previsao as fetchPrevisao } from '../api/relatorios'
+import { evolucao, topCategorias, previsao as fetchPrevisao, comparativo as fetchComparativo } from '../api/relatorios'
 import * as usuarioApi from '../api/usuario'
 import * as orcamentosApi from '../api/orcamentos'
 import { fmt, MESES, yAxisFmt } from '../utils/formatters'
@@ -83,19 +83,28 @@ export default function Dashboard() {
   const [patrimonio, setPatrimonio] = useState(null)
   const [orcamentos, setOrcamentos] = useState([])
   const [previsao, setPrevisao] = useState(null)
+  const [trendReceitas, setTrendReceitas] = useState(undefined)
+  const [trendDespesas, setTrendDespesas] = useState(undefined)
 
   useEffect(() => {
+    let cancelado = false
     async function load() {
       setLoading(true)
       try {
-        const [resResumo, resEvo, resCats, resPat, resOrc, resPrev] = await Promise.allSettled([
+        const mesAnterior = mes === 1 ? 12 : mes - 1
+        const anoAnterior = mes === 1 ? ano - 1 : ano
+
+        const [resResumo, resEvo, resCats, resPat, resOrc, resPrev, resComp] = await Promise.allSettled([
           resumo(mes, ano),
           evolucao(ano),
           topCategorias({ mes, ano, tipo: 'DESPESA' }),
           usuarioApi.patrimonio(),
           orcamentosApi.listar(mes, ano),
-          fetchPrevisao(mes, ano)
+          fetchPrevisao(mes, ano),
+          fetchComparativo({ mesAtual: mes, anoAtual: ano, mesAnterior, anoAnterior })
         ])
+
+        if (cancelado) return
 
         const ok = r => r.status === 'fulfilled'
 
@@ -110,10 +119,16 @@ export default function Dashboard() {
         if (ok(resPat)) setPatrimonio(resPat.value.data)
         if (ok(resOrc)) setOrcamentos(resOrc.value.data || [])
         if (ok(resPrev)) setPrevisao(resPrev.value.data)
-      } catch { toast.error('Erro ao carregar dados.') }
-      finally { setLoading(false) }
+        if (ok(resComp)) {
+          const { variacaoReceitas, variacaoDespesas } = resComp.value.data
+          setTrendReceitas(variacaoReceitas != null ? Math.round(variacaoReceitas) : undefined)
+          setTrendDespesas(variacaoDespesas != null ? Math.round(variacaoDespesas) : undefined)
+        }
+      } catch { if (!cancelado) toast.error('Erro ao carregar dados.') }
+      finally { if (!cancelado) setLoading(false) }
     }
     load()
+    return () => { cancelado = true }
   }, [mes, ano])
 
   if (loading) return <div className="p-8"><div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"><SkeletonStatCard /><SkeletonStatCard /><SkeletonStatCard /></div></div>
@@ -154,8 +169,8 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
           <div className="lg:col-span-8 space-y-4 md:space-y-8">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-              <StatCard label="Receitas Totais" value={fmt(dadosResumo.totalReceitas)} icon={TrendingUp} color="emerald" trend={12} />
-              <StatCard label="Despesas Totais" value={fmt(dadosResumo.totalDespesas)} icon={TrendingDown} color="red" trend={-5} />
+              <StatCard label="Receitas Totais" value={fmt(dadosResumo.totalReceitas)} icon={TrendingUp} color="emerald" trend={trendReceitas} />
+              <StatCard label="Despesas Totais" value={fmt(dadosResumo.totalDespesas)} icon={TrendingDown} color="red" trend={trendDespesas} />
               <StatCard label="Lucro Líquido" value={fmt(dadosResumo.saldo)} icon={Wallet} color="primary" />
             </div>
 

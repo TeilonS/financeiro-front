@@ -8,16 +8,14 @@ export function AuthProvider({ children }) {
     try { return JSON.parse(localStorage.getItem('user')) } catch { return null }
   })
 
-  function login(userData, token) {
+  function login(userData) {
     localStorage.setItem('user', JSON.stringify(userData))
-    if (token) localStorage.setItem('token', token)
     setUser(userData)
   }
 
   async function logout() {
     try { await api.post('/auth/logout') } catch { /* ignora falha de rede */ }
     localStorage.removeItem('user')
-    localStorage.removeItem('token')
     setUser(null)
   }
 

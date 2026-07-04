@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Plus, Trash2, Loader2, PiggyBank, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react'
 import Modal from '../components/Modal'
 import * as orcApi from '../api/orcamentos'
@@ -18,15 +18,18 @@ export default function Orcamentos() {
   const [form, setForm] = useState({ categoriaId: '', valorLimite: '' })
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState('')
+  const reqIdRef = useRef(0)
 
   async function load() {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     try {
       const [resOrc, resCat] = await Promise.all([orcApi.listar(mes, ano), catApi.listar()])
+      if (reqIdRef.current !== reqId) return
       setOrcamentos(resOrc.data || [])
       setCategorias(resCat.data || [])
-    } catch { setError('Erro ao carregar orçamentos.') }
-    finally { setLoading(false) }
+    } catch { if (reqIdRef.current === reqId) setError('Erro ao carregar orçamentos.') }
+    finally { if (reqIdRef.current === reqId) setLoading(false) }
   }
 
   useEffect(() => { load() }, [mes, ano])

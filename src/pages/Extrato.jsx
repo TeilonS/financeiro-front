@@ -10,7 +10,9 @@ const FORMATOS = [
   { value: 'CSV_INTER', label: 'CSV Inter' },
   { value: 'CSV_C6', label: 'CSV C6' },
   { value: 'CSV_NUBANK', label: 'CSV Nubank' },
-  { value: 'CSV_ITAU', label: 'CSV Itaú' },
+  { value: 'CSV_BRADESCO', label: 'CSV Bradesco' },
+  { value: 'CSV_CAIXA', label: 'CSV Caixa' },
+  { value: 'CSV_BB', label: 'CSV Banco do Brasil' },
 ]
 
 export default function Extrato() {

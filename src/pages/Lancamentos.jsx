@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Plus, Download, Pencil, Trash2, Loader2, ChevronLeft, ChevronRight, Search, Receipt } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Modal from '../components/Modal'
@@ -28,19 +28,22 @@ export default function Lancamentos() {
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [exportLoading, setExportLoading] = useState(false)
   const [busca, setBusca] = useState('')
+  const reqIdRef = useRef(0)
 
   async function loadData() {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     try {
       const params = { mes, ano, ...(tipoFiltro !== 'TODOS' ? { tipo: tipoFiltro } : {}) }
       const [resLanc, resCats] = await Promise.all([lancApi.listar(params), catApi.listar()])
+      if (reqIdRef.current !== reqId) return
       const arr = Array.isArray(resLanc.data) ? resLanc.data : resLanc.data?.content || []
       setLancamentos(arr)
       setCategorias(resCats.data || [])
     } catch {
-      toast.error('Erro ao carregar lançamentos.')
+      if (reqIdRef.current === reqId) toast.error('Erro ao carregar lançamentos.')
     } finally {
-      setLoading(false)
+      if (reqIdRef.current === reqId) setLoading(false)
     }
   }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Plus, Trash2, Loader2, Target, AlertTriangle, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react'
 import Modal from '../components/Modal'
 import * as metasApi from '../api/metas'
@@ -22,8 +22,10 @@ export default function Metas() {
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState('')
   const [deletandoId, setDeletandoId] = useState(null)
+  const reqIdRef = useRef(0)
 
   async function loadData() {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     setError('')
     try {
@@ -33,13 +35,14 @@ export default function Metas() {
         metasApi.alertas(params),
         catApi.listar(),
       ])
+      if (reqIdRef.current !== reqId) return
       setMetas(resMetas.data || [])
       setAlertasList(resAlertas.data || [])
       setCategorias(resCats.data || [])
     } catch {
-      setError('Erro ao carregar metas.')
+      if (reqIdRef.current === reqId) setError('Erro ao carregar metas.')
     } finally {
-      setLoading(false)
+      if (reqIdRef.current === reqId) setLoading(false)
     }
   }
 
