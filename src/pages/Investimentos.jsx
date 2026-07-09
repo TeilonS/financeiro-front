@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, Loader2, TrendingUp, History, Landmark, ShieldCheck, Pencil, Check, X, RefreshCw, BarChart2 } from 'lucide-react'
 import Modal from '../components/Modal'
+import ResumoCarteira from '../components/ResumoCarteira'
 import * as investimentosApi from '../api/investimentos'
 import * as usuarioApi from '../api/usuario'
 import { fmt } from '../utils/formatters'
@@ -216,6 +217,10 @@ export default function Investimentos() {
             <h2 className="text-4xl font-bold tabular-nums text-zinc-900 dark:text-white mt-2">{fmt(reserva)}</h2>
           )}
         </div>
+      </div>
+
+      <div className="mb-10">
+        <ResumoCarteira investimentos={investimentos} />
       </div>
 
       {loading ? (
