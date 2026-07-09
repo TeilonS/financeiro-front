@@ -12,6 +12,7 @@ const TIPOS = [
   { value: 'RENDA_FIXA', label: 'Renda Fixa' },
   { value: 'ACOES', label: 'Ações' },
   { value: 'FII', label: 'FIIs' },
+  { value: 'FUNDOS', label: 'Fundos' },
   { value: 'CRYPTO', label: 'Cripto' },
   { value: 'OUTROS', label: 'Outros' }
 ]

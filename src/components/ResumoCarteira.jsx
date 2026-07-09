@@ -5,6 +5,7 @@ const TIPO_META = {
   ACOES:      { label: "Ações",      color: "#FBBF24" },
   FII:        { label: "FIIs",       color: "#34D399" },
   CRYPTO:     { label: "Cripto",     color: "#60A5FA" },
+  FUNDOS:     { label: "Fundos",     color: "#F472B6" },
   OUTROS:     { label: "Outros",     color: "#A78BFA" },
 };
 const FALLBACK = { label: "Outros", color: "#9CA3AF" };
