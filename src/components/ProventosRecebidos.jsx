@@ -4,6 +4,17 @@ import { listarProventos, criarProvento, deletarProvento } from "../api/provento
 
 const MESES = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 const brl = (v) => new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
+const selectCls = "border border-zinc-200 dark:border-zinc-700 rounded-lg px-2 py-2 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100";
+
+function BarTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white dark:bg-[#111111] rounded-xl shadow-2xl border border-zinc-100 dark:border-white/5 px-3 py-2 text-sm backdrop-blur-md">
+      <p className="text-zinc-500 dark:text-zinc-400 text-xs mb-0.5">{label}</p>
+      <p className="text-zinc-900 dark:text-white font-semibold">{brl(payload[0].value)}</p>
+    </div>
+  );
+}
 
 export default function ProventosRecebidos({ investimentos = [] }) {
   const hoje = new Date();
@@ -44,20 +55,20 @@ export default function ProventosRecebidos({ investimentos = [] }) {
   const total = proventos.reduce((s,p) => s + Number(p.valor), 0);
 
   return (
-    <div className="bg-zinc-900 rounded-2xl p-5 space-y-6">
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-white/5 shadow-sm space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-semibold tracking-widest text-zinc-400">PROVENTOS RECEBIDOS</h3>
-        <span className="text-sm text-zinc-300">Total: <span className="text-emerald-400 font-semibold">{brl(total)}</span></span>
+        <h3 className="text-xs font-semibold tracking-widest text-zinc-500 dark:text-zinc-400">PROVENTOS RECEBIDOS</h3>
+        <span className="text-sm text-zinc-600 dark:text-zinc-300">Total: <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{brl(total)}</span></span>
       </div>
 
       {chartData.length > 0 && (
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top:8, right:8, left:-12, bottom:0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-              <XAxis dataKey="label" tick={{ fill:"#a1a1aa", fontSize:11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill:"#a1a1aa", fontSize:11 }} axisLine={false} tickLine={false} width={48} />
-              <Tooltip formatter={(v)=>[brl(v),"Recebido"]} contentStyle={{ background:"#18181b", border:"none", borderRadius:8, color:"#fff" }} cursor={{ fill:"#ffffff10" }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#88888820" vertical={false} />
+              <XAxis dataKey="label" tick={{ fill:"#888", fontSize:11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill:"#888", fontSize:11 }} axisLine={false} tickLine={false} width={48} />
+              <Tooltip content={<BarTooltip />} cursor={{ fill:"#88888815" }} />
               <Bar dataKey="total" fill="#34D399" radius={[4,4,0,0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -65,15 +76,15 @@ export default function ProventosRecebidos({ investimentos = [] }) {
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <select value={invId} onChange={e=>setInvId(e.target.value)} className="col-span-2 border border-zinc-700 rounded-lg px-2 py-2 bg-zinc-800 text-sm text-zinc-100">
+        <select value={invId} onChange={e=>setInvId(e.target.value)} className={`col-span-2 ${selectCls}`}>
           <option value="">Selecione o ativo</option>
           {investimentos.map(i => <option key={i.id} value={i.id}>{i.nome}</option>)}
         </select>
-        <select value={mes} onChange={e=>setMes(e.target.value)} className="border border-zinc-700 rounded-lg px-2 py-2 bg-zinc-800 text-sm text-zinc-100">
+        <select value={mes} onChange={e=>setMes(e.target.value)} className={selectCls}>
           {MESES.map((m,idx)=><option key={idx} value={idx+1}>{m}</option>)}
         </select>
-        <input type="number" value={ano} onChange={e=>setAno(e.target.value)} className="border border-zinc-700 rounded-lg px-2 py-2 bg-zinc-800 text-sm text-zinc-100 w-full" />
-        <input type="number" step="0.01" placeholder="R$" value={valor} onChange={e=>setValor(e.target.value)} className="border border-zinc-700 rounded-lg px-2 py-2 bg-zinc-800 text-sm text-zinc-100 w-full" />
+        <input type="number" value={ano} onChange={e=>setAno(e.target.value)} className={`${selectCls} w-full`} />
+        <input type="number" step="0.01" placeholder="R$" value={valor} onChange={e=>setValor(e.target.value)} className={`${selectCls} w-full`} />
       </div>
       <button onClick={salvar} disabled={salvando} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg py-2 text-sm disabled:opacity-50">
         {salvando ? "Salvando..." : "Lançar provento"}
@@ -83,11 +94,11 @@ export default function ProventosRecebidos({ investimentos = [] }) {
         {loading && <p className="text-sm text-zinc-500">Carregando...</p>}
         {!loading && proventos.length === 0 && <p className="text-sm text-zinc-500">Nenhum provento lançado ainda.</p>}
         {proventos.map(p => (
-          <div key={p.id} className="flex items-center justify-between text-sm py-1.5 px-2 rounded hover:bg-zinc-800">
-            <span className="text-zinc-200 truncate pr-2">{p.investimentoNome}</span>
+          <div key={p.id} className="flex items-center justify-between text-sm py-1.5 px-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
+            <span className="text-zinc-700 dark:text-zinc-200 truncate pr-2">{p.investimentoNome}</span>
             <span className="flex items-center gap-3 shrink-0">
               <span className="text-zinc-500">{MESES[p.mes-1]}/{p.ano}</span>
-              <span className="text-emerald-400">{brl(p.valor)}</span>
+              <span className="text-emerald-600 dark:text-emerald-400">{brl(p.valor)}</span>
               <button onClick={()=>remover(p.id)} className="text-zinc-500 hover:text-red-400">✕</button>
             </span>
           </div>
